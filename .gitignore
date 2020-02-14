@@ -1,0 +1,11 @@
+*/*.DS_Store
+/.idea
+/build
+/dev
+/node_modules
+/sd-card
+/src
+/yarn-error.log
+.DS_Store
+/.jekyll-cache
+source/.jekyll-cache

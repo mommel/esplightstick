@@ -1,1 +1,33 @@
-theme: jekyll-theme-modernist
+name                : ESPLightstick
+title               : ESPLightstick
+url                 : https://mommel.github.io/esplightstick/
+production_url      : https://mommel.github.io/esplightstick/
+baseurl             : /
+source              : ./source
+destination         : ./destination
+plugins_dir         : _plugins
+layouts_dir         : _layouts
+data_dir            : _data
+includes_dir        : _includes
+encoding            : utf-8
+highlighter         : rouge
+exclude             : [".rvmrc", ".direnv", ".rbenv-version", "ReadMe.md", "Rakefile", "changelog.md", "License.md"]
+author:
+  name : Mommel
+  email : mommel@gmx.de
+  github : mommel
+  twitter : mommelius
+kramdown:
+ input: GFM
+ auto_ids: true
+ hard_wrap: false
+ paginate: 5
+
+
+# List of links in the navigation bar
+navbar-links:
+  about: "about"
+
+#plugins:
+#  - jekyll-paginate
+#  - jekyll-sitemap
