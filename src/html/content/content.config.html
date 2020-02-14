@@ -1,0 +1,354 @@
+<div class="container" id="page-content">
+    <div class="row justify-content-center">
+        <div class="settingsBox view gradient-mask rounded p-5 m-3 h-auto">
+            <h3>Menu Settings</h3>
+            <div class="mask rounded mt-2">
+                <section>
+                    <div class="md-2">
+                        <div class="card ">
+                            <div class="container">
+                                <div class="row justify-content-start mb-2 mr-2">
+                                    <div class="col-7">
+                                        <div class="text-center">
+                                            <p class="text-uppercase text-muted mt-1">
+                                                <small>Initial Delay</small>
+                                            </p>
+                                        </div>
+                                        <div class="">
+                                            <div class="progress md-progress">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                     style="width: 31%" aria-valuenow="31" aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-5 mr-9 pr-5">
+                                        <div id="initDelay" class="mt-3 mb-2 def-deIncreasBtn deIncreasBtn safari_only">
+                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                    class="decreade"></button>
+                                            <input class="idAmount" min="0" max="99" name="idAmount" value="1"
+                                                   type="number">
+                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                    class="increase"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="mask rounded mt-2">
+                <section>
+                    <div class="md-2">
+                        <div class="card ">
+                            <div class="container">
+                                <div class="row justify-content-start mb-2 mr-2">
+                                    <div class="col-7">
+                                        <div class="text-center pl-3">
+                                            <p class="text-uppercase text-muted mt-1 mb-1">
+                                                <small>Frame Delay</small>
+                                            </p>
+                                        </div>
+                                        <div class="">
+                                            <div class="progress md-progress">
+                                                <div class="progress-bar bg-success" role="progressbar"
+                                                     style="width: 31%" aria-valuenow="31" aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div id="frameDelay"
+                                             class="mt-3 mb-2 def-deIncreasBtn deIncreasBtn safari_only">
+                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                    class="decreade"></button>
+                                            <input class="fdAmount" min="0" max="99" name="fdAmount" value="1"
+                                                   type="number">
+                                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                    class="increase"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="md-2 mt-2">
+                <section>
+                    <div class="card ">
+                        <div class="container">
+                            <div class="row justify-content-start mb-2 mr-2">
+                                <div class="col-7">
+                                    <div class="text-center pl-3">
+                                        <p class="text-uppercase text-muted mt-1 mb-1">
+                                            <small>LED Brightness</small>
+                                        </p>
+                                    </div>
+                                    <div class="">
+                                        <div class="progress md-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 31%"
+                                                 aria-valuenow="31" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div id="brightness" class="mt-3 mb-2 def-deIncreasBtn deIncreasBtn safari_only">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                class="decreade"></button>
+                                        <input class="bAmount" min="0" max="99" name="bAmount" value="1" type="number">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                class="increase"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="md-2 mt-2">
+                <section>
+                    <div class="card ">
+                        <div class="container">
+                            <div class="row justify-content-start mb-2 mr-2">
+                                <div class="col-7">
+                                    <div class="text-center pl-3">
+                                        <p class="text-uppercase text-muted mt-1 mb-1">
+                                            <small>Repeat Times</small>
+                                        </p>
+                                    </div>
+                                    <div class="">
+                                        <div class="progress md-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 31%"
+                                                 aria-valuenow="31" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div id="repeatTimes" class="mt-3 mb-2 def-deIncreasBtn deIncreasBtn safari_only">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                class="decreade"></button>
+                                        <input class="rtAmount" min="0" max="10" name="rtAmount" value="1"
+                                               type="number">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                class="increase"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="md-2 mt-2">
+                <section>
+                    <div class="card ">
+                        <div class="container">
+                            <div class="row justify-content-start mb-2 mr-2">
+                                <div class="col-7">
+                                    <div class="text-center pl-3">
+                                        <p class="text-uppercase text-muted mt-1 mb-1">
+                                            <small>Repeat Delay</small>
+                                        </p>
+                                    </div>
+                                    <div class="">
+                                        <div class="progress md-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 31%"
+                                                 aria-valuenow="31" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div id="repeatDelay" class="mt-3 mb-2 def-deIncreasBtn deIncreasBtn safari_only">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                class="decreade"></button>
+                                        <input class="rdAmount" min="0" max="10" name="rtAmount" value="1"
+                                               type="number">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                class="increase"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="md-2 mt-2">
+                <section>
+                    <div class="card ">
+                        <div class="container">
+                            <div class="row justify-content-start mb-2 mr-2">
+                                <div class="col-7">
+                                    <div class="text-center pl-3">
+                                        <p class="text-uppercase text-muted mt-1 mb-1">
+                                            <small>Frame Blank Delay</small>
+                                        </p>
+                                    </div>
+                                    <div class="">
+                                        <div class="progress md-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 31%"
+                                                 aria-valuenow="31" aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div id="frameBlankDelay"
+                                         class="mt-3 mb-2 def-deIncreasBtn deIncreasBtn safari_only">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()"
+                                                class="decreade"></button>
+                                        <input class="fbAmount" min="0" max="10" name="fbAmount" value="1"
+                                               type="number">
+                                        <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()"
+                                                class="increase"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="settingsBox view gradient-mask rounded p-5 m-3 w-auto">
+            <h3>Hardware Settings</h3>
+            <div class="mask rounded mt-2">
+                <section>
+                    <div class="">
+                        <div class="card ">
+                            <div class="container">
+                                <div class="input-group justify-content-center">
+                                    <p class="text-uppercase text-muted">
+                                        <small>LED COLORORDER</small>
+                                    </p>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="btn-group  justify-content-center" role="group"
+                                         aria-label="Color Configuration">
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=text]').setAttribute('value',this.innerHTML)">
+                                            RGB
+                                        </button>
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=text]').setAttribute('value',this.innerHTML)">
+                                            BRG
+                                        </button>
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=text]').setAttribute('value',this.innerHTML)">
+                                            GBR
+                                        </button>
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=text]').setAttribute('value',this.innerHTML)">
+                                            RBG
+                                        </button>
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=text]').setAttribute('value',this.innerHTML)">
+                                            BGR
+                                        </button>
+                                        <button type="button" class="btn btn-secondary"
+                                                onclick="this.parentNode.querySelector('input[type=text]').setAttribute('value',this.innerHTML)">
+                                            GRB
+                                        </button>
+                                    </div>
+                                    <input class="colororder" name="colororder" value="" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="mask rounded mt-2">
+                <section>
+                    <div class="md-2">
+                        <div class="card ">
+                            <div class="container">
+                                <div class="input-group justify-content-center">
+                                    <p class="text-uppercase text-muted mt-1 mb-1">
+                                        <small>Hostname</small>
+                                    </p>
+                                </div>
+                                <div class="row justify-content-start mb-2 pr-2 pl-2 ">
+                                    <input type="text" class="form-control pb-2 mb-2 textinput" name="HOSTNAME"
+                                           id="hostname" aria-describedby="hostname" placeholder="Enter HOSTNAME">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="mask rounded mt-2">
+                <section>
+                    <div class="md-2">
+                        <div class="card ">
+                            <div class="container">
+                                <div class="input-group justify-content-center">
+                                    <p class="text-uppercase text-muted mt-1 mb-1">
+                                        <small>SSID</small>
+                                    </p>
+                                </div>
+                                <div class="row justify-content-start mb-2 pr-2 pl-2 ">
+                                    <input type="text" class="form-control pb-2 mb-2 textinput" name="APSSID" id="ssid"
+                                           aria-describedby="ssid" placeholder="Enter SSID">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="mask rounded mt-2">
+                <section>
+                    <div class="md-2">
+                        <div class="card ">
+                            <div class="container">
+                                <div class="input-group justify-content-center">
+                                    <p class="text-uppercase text-muted mt-1 mb-1">
+                                        <small>Password</small>
+                                    </p>
+                                </div>
+                                <div class="row justify-content-start mb-2 pr-2 pl-2 ">
+                                    <input type="text" class="form-control pb-2 mb-2 textinput" name="APPSK"
+                                           id="password" aria-describedby="password" placeholder="Enter Wifi Password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="mask rounded mt-2">
+                <section>
+                    <div class="md-2">
+                        <div class="card ">
+                            <div class="container">
+                                <div class="input-group justify-content-center">
+                                    <p class="text-uppercase text-muted mt-1 mb-1">
+                                        <small>Wifi Mode</small>
+                                    </p>
+                                </div>
+                                <div class="row j justify-content-center mb-2 pr-2 pl-2 ">
+                                    <div class="custom-control custom-switch text-black-50">
+                                        <input type="checkbox" class="custom-control-input" id="wifimode">
+                                        <label class="custom-control-label" for="wifimode">create Wifi Network</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="mb-0 mt-2 rounded">
+                <div class="savebtnContainer">
+                    <div class="savebtnWrap">
+                        <div class="savebtn">Save Config</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+</div>

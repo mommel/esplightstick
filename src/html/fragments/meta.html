@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Esplightstick">
+  <meta name="author" content="Mommel">
+  <title>ESPLightStick</title>
+  <!-- build:css:build els.min.css -->
+  <link href="bootstrap.css" rel="stylesheet">
+  <link href="esplightstick.css" rel="stylesheet">
+  <!-- /build -->
+  <!-- build:template
+  <% if (page === 'images') { %> 
+    <% if (environment === 'dev') { %>
+      <link href="dropzone.css" rel="stylesheet">
+      <link href="fontawesome.css" rel="stylesheet">
+    <% } else { %>
+      <link href="elsdz.min.css" rel="stylesheet">
+    <% } %>
+  <% } %>
+  /build -->
+</head>
+<body>
+  <!-- Navigation fragments/navigation.html -->
+  <!-- build:include fragments/navigation.html -->
+  <!-- /build -->
+  <!-- /Navigation -->
+
+  <!-- Header fragments/header.html -->
+  <!-- build:include fragments/header.html -->
+  <!-- /build -->
+  <!-- /Header -->
+
+  <!-- Page Content content.*.tpl -->
+
+  <!-- build:template 
+  <% if (page !== 'index') { %> 
+  <!--
+  <% } %> 
+  /build -->
+  <!-- build:include content/content.index.html -->
+  <!-- /build -->
+  <!-- -->
+
+  <!-- build:template 
+  <% if (page !== 'images') { %> 
+  <!--
+  <% } %> 
+  /build -->
+  <!-- build:include content/content.images.html -->
+  <!-- /build -->
+  <!-- -->
+  
+  <!-- build:template 
+  <% if (page !== 'config') { %> 
+  <!--
+  <% } %> 
+  /build -->
+  <!-- build:include content/content.config.html -->
+  <!-- /build -->
+  <!-- -->
+  <!-- /Page Content -->
+
+
+  <!-- build:template 
+  <% if (page !== 'license') { %> 
+  <!--
+  <% } %> 
+  /build -->
+  <div class="container" id="page.images">
+    <div class="row">
+      <div class="col-md-8 mb-5">
+        <p class="license-disclaimer">
+  <!-- build:include content/license-disclaimer.data.txt -->
+  <!-- /build -->
+        </p>  
+      </div>
+    </div>
+  </div>
+  <!-- -->
+  <!-- /Page Content -->
+  
+  <!-- build:js:build els.min.js -->
+  <script src="jquery.js"></script>
+  <script src="bootstrap.js"></script>
+  <!-- /build -->
+
+  <!-- build:template
+  <% if (page === 'images') { %> 
+    <% if (environment === 'dev') { %>
+      <script src="dropzone.js"></script>
+      <script src="images.js"></script>
+    <% } else { %>
+      <link href="elsdz.min.js" rel="stylesheet">
+    <% } %>
+  <% } %>
+  /build -->
+
+  <!-- Footer -->
+  <!-- build:include fragments/footer.html -->
+  <!-- /build -->
+  <!-- /Footer -->
