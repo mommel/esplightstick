@@ -10,3 +10,5 @@ node_modules
 .idea
 # Just a crapfolder
 __crap
+/.jekyll-cache
+/source
