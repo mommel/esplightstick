@@ -11,4 +11,3 @@ header:
 
 tbd
 
-{% include nav_list nav="docs" %}
