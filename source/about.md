@@ -1,7 +1,7 @@
 ---
 title: ESPLightstick
 layout: default
-permalink: /about.html
+permalink: /esplightstick/about.html
 author_profile: true
 classes: wide
 header:

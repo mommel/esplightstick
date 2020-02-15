@@ -1,7 +1,7 @@
 ---
 title: ESPLightstick - Setup me up
 layout: default
-permalink: /docs/setup.html
+permalink: /esplightstick/docs/setup.html
 teaser: /assets/images/d1mini_sd_oled_pack.jpg
 masthead_title: "My Custom Title"
 layout: collection
