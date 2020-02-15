@@ -6,11 +6,6 @@ url                 : https://mommel.github.io/esplightstick/
 production_url      : https://mommel.github.io/esplightstick/
 baseurl             : /
 source              : ./source
-destination         : ./_site
-plugins_dir         : ./_plugins
-layouts_dir         : ./_layouts
-data_dir            : ./_data
-includes_dir        : ./_includes
 encoding            : utf-8
 highlighter         : rouge
 exclude             : [".rvmrc", ".direnv", ".rbenv-version", "ReadMe.md", "Rakefile", "changelog.md", "License.md"]
