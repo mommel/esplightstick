@@ -15,13 +15,10 @@
   </head>
 
   <body class="layout--{{ page.layout | default: layout.layout }}{% if page.classes or layout.classes %}{{ page.classes | default: layout.classes | join: ' ' | prepend: ' ' }}{% endif %}">
-    {% include_cached skip-links.html %}
-    {% include browser-upgrade.html %}
-    {% include masthead.html %}
-
+    
     <div class="initial-content">
       {{ content }}
-      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      
         <div align="center" style="margin: 1em 0;">
         
 
@@ -33,7 +30,6 @@
 
     {% if site.search == true %}
       <div class="search-content">
-        {% include search/search_form.html %}
       </div>
     {% endif %}
 
