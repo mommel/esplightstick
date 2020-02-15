@@ -4,7 +4,7 @@ masthead_title: ESPLightstick
 
 url                 : https://mommel.github.io/esplightstick/
 production_url      : https://mommel.github.io/esplightstick/
-baseurl             : /
+baseurl             : /esplightstick/
 source              : ./source
 destination         : ./destination
 plugins_dir         : ./_plugins
