@@ -1,10 +1,7 @@
 name                : ESPLightstick
 title               : ESPLightstick
-masthead_title: ESPLightstick
-
-url                 : https://mommel.github.io/esplightstick/
 production_url      : https://mommel.github.io/esplightstick/
-baseurl             : /
+baseurl             : 
 source              : ./source
 encoding            : utf-8
 highlighter         : rouge
@@ -58,3 +55,4 @@ plugins:
  - jekyll-youtube
  - jekyll-feed
  - jekyll_picture_tag
+ - jekyll_github_sample

@@ -1,7 +1,7 @@
 ---
 excerpt: "This post should [...]"
 
-permalink: /esplightstick/docs/thehardware.html
+permalink: /docs/thehardware.html
 header:
   overlay_image: /assets/images/unsplash-image-1.jpg
   overlay_filter: rgba(255, 0, 0, 0.5)

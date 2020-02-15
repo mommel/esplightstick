@@ -2,7 +2,7 @@
 title: ESPLightstick
 layout: splash
 class: figure
-permalink: /esplightstick/index.html
+permalink: /index.html
 sidebar:
   navigation: "docs"
 footer:
