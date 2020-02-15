@@ -10,4 +10,6 @@ group :jekyll_plugins do
   gem "jekyll-sitemap"
   gem "jekyll_github_sample"
   gem "jekyll-include-cache"
+  gem "jekyll-github-metadata"
+  gem 'jekyll-gist'
 end

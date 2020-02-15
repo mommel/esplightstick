@@ -2,7 +2,6 @@ name                : ESPLightstick
 title               : ESPLightstick
 production_url      : https://mommel.github.io/esplightstick/
 baseurl             : 
-source              : ./source
 encoding            : utf-8
 highlighter         : rouge
 exclude             : [".rvmrc", ".direnv", ".rbenv-version", "ReadMe.md", "Rakefile", "changelog.md", "License.md"]
@@ -55,4 +54,6 @@ plugins:
  - jekyll-youtube
  - jekyll-feed
  - jekyll_picture_tag
- - jekyll_github_sample
+ - jekyll_github_sample 
+ - "jekyll-github-metadata"
+ - jekyll-gist  
