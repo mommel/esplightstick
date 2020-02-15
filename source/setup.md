@@ -14,5 +14,3 @@ $ yarn install
 Create a useable version of the webserver that can be installed on the SD Card
 
 tbc
-
-{% youtube "https://www.youtube.com/watch?v=YtsAYilnAJQ" %}
