@@ -31,3 +31,7 @@ Still incomplete:
   * No fritzing/eagle files by now.
 
 
+<figure>
+  <img src="/assets/images/esplightstick_Steckplatine.jpg" alt="fritzing">
+  <figcaption>The sandwich.</figcaption>
+</figure>
