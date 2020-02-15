@@ -12,3 +12,7 @@ node_modules
 __crap
 /.jekyll-cache
 /source
+/.bundle
+/.direnv
+/.env
+/destination
