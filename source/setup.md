@@ -12,7 +12,6 @@ Install the environment with yarn
 $ yarn install
 ```
 Create a useable version of the webserver that can be installed on the SD Card
-{% github_sample_ref mommel/esplightstick/master/Gruntfile.js %}
 
 tbc
 
