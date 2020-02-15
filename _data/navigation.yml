@@ -1,0 +1,28 @@
+docs:
+  - title: 
+    children:
+      - title: "Setup"
+        url: /docs/setup.html
+      - title: "Building the Hardware"
+        url: /docs/thehardware.html
+      - title: "Creating the default Webserver"
+        url: /docs/webserversetup.html
+      - title: "Explaining the sketch"
+        url: /docs/ardunioinstallation/
+      - title: "The Pictureprocessing"
+        url: /docs/thestick/
+
+  - title: Customization
+    children:
+      - title: "Webserver"
+        url: /docs/customizeWebserver/
+
+  - title: Content
+    children:
+      - title: "Examples"
+        url: /examples/ 
+
+  - title: About
+    children:
+      - title: "About"
+        url: /about/

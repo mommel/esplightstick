@@ -1,19 +1,39 @@
 name                : ESPLightstick
 title               : ESPLightstick
+masthead_title: ESPLightstick
+
 url                 : https://mommel.github.io/esplightstick/
 production_url      : https://mommel.github.io/esplightstick/
 baseurl             : /
 source              : ./source
 destination         : ./destination
-plugins_dir         : _plugins
-layouts_dir         : _layouts
-data_dir            : _data
-includes_dir        : _includes
+plugins_dir         : ./_plugins
+layouts_dir         : ./_layouts
+data_dir            : ./_data
+includes_dir        : ./_includes
 encoding            : utf-8
 highlighter         : rouge
 exclude             : [".rvmrc", ".direnv", ".rbenv-version", "ReadMe.md", "Rakefile", "changelog.md", "License.md"]
+
+minimal_mistakes_skin: "dark"
+theme: minimal-mistakes-jekyll
+logo: "/assets/images/logo.png"
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: docs
+    values:
+      read_time: true
+      sidebar:
+        nav: "docs"
+atom_feed:
+  path: "http://feeds.feedburner.com/youFeedname"
+
+search: true  
 author:
   name : Mommel
+  avatar : "/assets/images/bio-photo.jpg"
   email : mommel@gmx.de
   github : mommel
   twitter : mommelius
@@ -21,13 +41,25 @@ kramdown:
  input: GFM
  auto_ids: true
  hard_wrap: false
- paginate: 5
 
+footer:
+  links:
+    - label: "Repository"
+      url: "https://github.com/mommel/esplightstick"
+
+pagination:
+  enabled: true
+  per_page: 10
 
 # List of links in the navigation bar
 navbar-links:
   about: "about"
 
-#plugins:
-#  - jekyll-paginate
-#  - jekyll-sitemap
+gems: [jekyll_github_sample]
+
+plugins:
+ - jekyll-sitemap
+ - jekyll-paginate-v2
+ - jekyll-youtube
+ - jekyll-feed
+ - jekyll_picture_tag

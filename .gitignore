@@ -9,3 +9,5 @@
 .DS_Store
 /.jekyll-cache
 source/.jekyll-cache
+/.bundle
+/.direnv
