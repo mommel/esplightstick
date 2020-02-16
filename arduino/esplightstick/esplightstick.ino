@@ -71,6 +71,37 @@
 */
 #define VERSION "0.3.0"
 
+
+/*
+
+██╗  ██╗ █████╗ ██████╗ ██████╗ ██╗    ██╗ █████╗ ██████╗ ███████╗
+██║  ██║██╔══██╗██╔══██╗██╔══██╗██║    ██║██╔══██╗██╔══██╗██╔════╝
+███████║███████║██████╔╝██║  ██║██║ █╗ ██║███████║██████╔╝█████╗  
+██╔══██║██╔══██║██╔══██╗██║  ██║██║███╗██║██╔══██║██╔══██╗██╔══╝  
+██║  ██║██║  ██║██║  ██║██████╔╝╚███╔███╔╝██║  ██║██║  ██║███████╗
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝  ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+
+
+WEMOS D1 MINI
+Upload Speed 921600
+CPU 80 MHz
+Flash 4M (3M SPIFFS)                                                                                                              
+*/
+
+#define A0                      17
+#define D0                      16
+#define D1                      5
+#define D2                      4
+#define D3                      0  // CS2
+#define D4                      2  // TXD1
+#define D5                      14 // CLK
+#define D6                      12 // MISO
+#define D7                      13 // MOSI  CTS0 RXD2
+#define D8                      15 // CS    RTS0 TXD2
+#define TX                         // CS1   TXD0
+#define RX                         // RXD0
+#define LED_BUILTIN             2
+
 /*
 
  ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
@@ -161,19 +192,6 @@
 
 */
 
-#define D0                      16
-#define D1                      5
-#define D2                      4
-#define D3                      0  // CS2
-#define D4                      2  // TXD1
-#define D5                      14 // CLK
-#define D6                      12 // MISO
-#define D7                      13 // MOSI  CTS0 RXD2
-#define D8                      15 // CS    RTS0 TXD2
-#define TX                         // CS1   TXD0
-#define RX                         // RXD0
-#define LED_BUILTIN             2
-
 // Buttons
 #define BTN_RIGHT               0
 #define BTN_UP                  1
@@ -197,6 +215,7 @@ int adcKeyVal[5] ={ 30, 170, 390, 600, 800 };
 #define MI_REPEAT_DELAY         6
 #define MI_FRAME_BLANK_DELAY    7
 #define MI_CYCLE_ALL_IMAGES     8
+#define MI_GOWIFI               9
 
 // LED FILE READER
 #define LFR_BMP_BF_TYPE         0x4D42
@@ -251,7 +270,7 @@ int adKeyOld = -1;
 
 // Status vars
 // bool systemReady = true;
-bool wifiMode = true;
+bool wifiMode = false;
 int activeMenuEntry = 1;
 
 // Application vars
@@ -1004,6 +1023,12 @@ void showMenuEntry(int entry) {
             }
             display.display();
             break;
+        case MI_GOWIFI:
+            display.clearDisplay();
+            display.setCursor(0, 0);
+            display.println("9) Goto WifiMode");
+            display.display();
+            break;
     }
 }
 
@@ -1021,6 +1046,10 @@ void actionSelect() {
 #ifdef SERIALDEBUG
     Serial.println("Select");
 #endif
+    if(activeMenuEntry == MI_GOWIFI) {
+      wifiMode = true;
+      return;
+    }
     loopCounter = 0;
     delay(initDelay+100);
     cycleImageCount = 0;
@@ -1212,18 +1241,18 @@ void appHandler() {
     if (updateScreen){
         updateScreen = false;
         showMenuEntry(activeMenuEntry);
-#ifdef DEMOMODE
-        delay(2000);
-      activeMenuEntry++;
-      if(activeMenuEntry<=8){
-        updateScreen = true;
-        return;
-      }else{
-        wifiMode = true;
-      }
-#endif
-        menuHanlder();
     }
+#ifdef DEMOMODE
+    delay(2000);
+    activeMenuEntry++;
+    if(activeMenuEntry<=8){
+      updateScreen = true;
+    }else{
+      wifiMode = true;
+    }
+#else
+    menuHanlder();
+#endif
 }
 
 MD5Builder md5;
@@ -1858,6 +1887,12 @@ void setupWifi() {
 void wifiHandler() {
     server.handleClient();
     MDNS.update();
+    int keypress = -1;
+    keypress = keypadRead();
+    if( keypress == BTN_SELECT ) {
+      Serial.println("==> Leaving WIFI mode now.");
+      wifiMode = false;
+    }
 }
 
 /*
@@ -1988,7 +2023,7 @@ void loop() {
     if( wifiMode ) {
         wifiHandler();
     } else {
-        // appHandler();
+        appHandler();
     }
 }
 
