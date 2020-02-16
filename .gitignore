@@ -1,8 +1,8 @@
 # Dynamicly filled by yarn and grunt tasks
-build/**/*
-dev/**/*
-node_modules
-/yarn-error.log
+/webserver/build/**/*
+/webserver/dev/**/*
+/webserver/node_modules
+/webserver/yarn-error.log
 # Mac DS_Store files
 **/.DS_Store
 # Ide stuff
@@ -10,3 +10,10 @@ node_modules
 .idea
 # Just a crapfolder
 __crap
+/.jekyll-cache
+/source
+/.bundle
+/.direnv
+/.env
+/destination
+/_site
