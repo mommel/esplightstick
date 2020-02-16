@@ -49,9 +49,9 @@
   Webserver:
     Reachable on http://192.168.1.1 or https://192.168.1.1
     * show available Images
-    * add Image (not implemented yet)
-    * delete Image (not implemented yet)
-    * Configuration - same as Menu (not implemented yet)
+    * add Image
+    * delete Image
+    * Configuration - same as Menu (not fully implemented yet)
 
   Libaries used:
       Name                              Version
@@ -69,7 +69,7 @@
       GITHUB: tbd
       VIDEO: tbd
 */
-#define VERSION "0.3.0"
+#define VERSION "0.4.0"
 
 
 /*
