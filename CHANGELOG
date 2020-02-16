@@ -5,9 +5,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-### Added
-- Fritzing
 
+## [0.4.0] - 2020-02-16
+### Added
+- Menuitem to goto Wifi Mode
+- Wifimode return to normal mode by pressing select
+- Fritzing
 
 ## [0.3.1] - 2020-02-16
 ### Changed
