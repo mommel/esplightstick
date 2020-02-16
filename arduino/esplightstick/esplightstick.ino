@@ -70,8 +70,6 @@
       VIDEO: tbd
 */
 #define VERSION "0.4.0"
-
-
 /*
 
 ██╗  ██╗ █████╗ ██████╗ ██████╗ ██╗    ██╗ █████╗ ██████╗ ███████╗
@@ -128,7 +126,7 @@ Flash 4M (3M SPIFFS)
 #define OLED_SDA        D2
 #define OLED_RESET      D3
 #define NEOPX_DATA      D0
-#define AD_KEYBOARD     D5
+#define AD_KEYBOARD     D6
 #define AUXBTN          D8
 #define ANALOG_READ_PIN A0
 
@@ -203,15 +201,15 @@ Flash 4M (3M SPIFFS)
 */
 
 // Buttons
-#define NO_BTN                  5
-#define BTN_LEFT                2
-#define BTN_UP                  0
-#define BTN_DOWN                1
-#define BTN_RIGHT               3
-#define BTN_SELECT              4
-#define BTN_AMOUNT              6
+#define NO_BTN                  -1
+#define BTN_LEFT                1   //  0
+#define BTN_UP                  2   //  6
+#define BTN_DOWN                3   //  21
+#define BTN_RIGHT               4   //  42
+#define BTN_SELECT              5   //  89
+#define BTN_AMOUNT              5
 
-int adcKeyVal[6] ={ 0, 6, 21, 42, 89, 255 };
+int adcKeyVal[5] ={ 0, 6, 21, 42, 89 };
 
 // VALUE
 #define VAL_INCREASE            1
@@ -765,25 +763,48 @@ void azSort(String *entry, int length) {
 }
 
 
-String outCardInfo(int type) {
-    char data[64];
-    /*
+void outCardInfo(int type) {
+#ifdef SERIALDEBUG
+    Serial.print("╚=> ");
+#endif
     switch (type) {
         case 1:
-            snprintf(data, "Found: %s", cardType.c_str());
+#ifdef SERIALDEBUG
+            Serial.print("Found: ");
+            Serial.println(cardType);
+#endif
+            display.print("Found: ");
+            display.println(cardType);
             break;
         case 2:
-            snprintf(data, "FAT%f", fatType);
+#ifdef SERIALDEBUG
+            Serial.print("FAT: ");
+            Serial.println(fatType);
+#endif
+            display.print("FAT: ");
+            display.println(fatType);
             break;
         case 3:
-            snprintf(data, "Max: %f MB", cardSize * 0.000512);
+#ifdef SERIALDEBUG
+            Serial.print("Max: ");
+            Serial.print(cardSize * 0.000512);
+            Serial.println(" MB");
+#endif
+            display.print("Max: ");
+            display.print(cardSize * 0.000512);
+            display.println(" MB");
             break;
         case 4:
-            snprintf(data, "Free: %f MB", freeSpace);
+#ifdef SERIALDEBUG
+            Serial.print("Free: ");
+            Serial.print(freeSpace * 0.000512);
+            Serial.println(" MB");
+#endif
+            display.print("Free: ");
+            display.print(freeSpace * 0.000512);
+            display.println(" MB");
             break;
     }
-    */
-    return data;
 }
 
 
@@ -882,20 +903,14 @@ void checkCard() {
 #endif
     display.display();
     delay(1000);
-#ifdef SERIALDEBUG
-    Serial.println("╚=> " + outCardInfo(1));
-    Serial.println("╚=> " + outCardInfo(2));
-    Serial.println("╚=> " + outCardInfo(3));
-    Serial.println("╚=> " + outCardInfo(4));
-#endif
     display.clearDisplay();
-    display.println(outCardInfo(1));
-    display.println(outCardInfo(2));
+    outCardInfo(1);
+    outCardInfo(2);
     display.display();
     delay(1000);
     display.clearDisplay();
-    display.println(outCardInfo(3));
-    display.println(outCardInfo(4));
+    outCardInfo(3);
+    outCardInfo(4);
     display.display();
     delay(1000);
 }
@@ -987,47 +1002,53 @@ void menuHanlder() {
         sdFile.close();
         abortEvent = 0;
     }
-    if (loopCounter > 2000) {
+    if (loopCounter > 10000) {
         int keypress = -1;
         keypress = keypadRead();
-        Serial.println(keypress);
-        delay(50);
         if ((digitalRead(AUXBTN) != LOW)) {
             keypress = BTN_SELECT;
+#ifdef SERIALDEBUG
             Serial.println("AUXBTN LOW");
+#endif
         }
         switch (keypress) {
             case BTN_SELECT:
                 loopCounter = 0;
+#ifdef SERIALDEBUG
                 Serial.println("BTN_SELECT");
-         //       actionSelect();
+#endif
+                actionSelect();
                 break;
             case BTN_RIGHT:
                 loopCounter = 0;
+#ifdef SERIALDEBUG
                 Serial.println("BTN_RIGHT");
-         //       changeValue(VAL_INCREASE);
+#endif
+                changeValue(VAL_INCREASE);
                 break;
             case BTN_LEFT:
                 loopCounter = 0;
+#ifdef SERIALDEBUG
                 Serial.println("BTN_LEFT");
-         //       changeValue(VAL_DECREASE);
+#endif
+                changeValue(VAL_DECREASE);
                 break;
             case BTN_UP:
                 loopCounter = 0;
+#ifdef SERIALDEBUG
                 Serial.println("BTN_UP");
-         //       move(VAL_INCREASE);
+#endif
+                move(VAL_INCREASE);
                 break;
             case BTN_DOWN:
                 loopCounter = 0;
+#ifdef SERIALDEBUG
                 Serial.println("BTN_DOWN");
-          //      move(VAL_DECREASE);
-                break;
-            case NO_BTN:
-                loopCounter = 200;
+#endif
+                move(VAL_DECREASE);
                 break;
         }
     }
-    Serial.println(loopCounter);
     return;
 }
 
