@@ -92,14 +92,14 @@ Flash 4M (3M SPIFFS)
 #define D0                      16
 #define D1                      5
 #define D2                      4
-#define D3                      0  // CS2
-#define D4                      2  // TXD1
-#define D5                      14 // CLK
-#define D6                      12 // MISO
-#define D7                      13 // MOSI  CTS0 RXD2
-#define D8                      15 // CS    RTS0 TXD2
-#define TX                         // CS1   TXD0
-#define RX                         // RXD0
+#define D3                      0   // CS2
+#define D4                      2   // TXD1
+#define D5                      14  // CLK
+#define D6                      12  // MISO
+#define D7                      13  // MOSI  CTS0 RXD2
+#define D8                      15  // CS    RTS0 TXD2
+#define TX                          // CS1   TXD0
+#define RX                          // RXD0
 #define LED_BUILTIN             2
 
 /*
@@ -146,17 +146,23 @@ Flash 4M (3M SPIFFS)
  * SERIALDEBUG activates debug messages to the serial
  */
 
-//#define STARTSSL // Uncomment this to enable SSL
+// Uncomment this to enable SSL
+// #define STARTSSL
 
-#define SERIALDEBUG // Comment this Line to disable serial debug
+// Comment this Line to disable serial debug
+#define SERIALDEBUG
 
-#define HTTP_GZ_ACTIVE // Uncomment to activate HTTP compression
+// Uncomment to activate HTTP compression
+#define HTTP_GZ_ACTIVE
 
-//#define FORMATSPIFFS // Uncomment if you need to format your spiffs
+// Uncomment if you need to format your spiffs
+// #define FORMATSPIFFS
 
-#define SPECIAL_SETUP_MODE // Uncomment if you need the special unrestricted upload for setup
+// Uncomment if you need the special unrestricted upload for setup
+#define SPECIAL_SETUP_MODE
 
-#define CHECKHW // Check EEPROM settings of Ide
+// Check EEPROM settings of Ide
+#define CHECKHW
 
 /*
 
@@ -168,6 +174,7 @@ Flash 4M (3M SPIFFS)
 ╚══════╝╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝
 
 */
+
 #include <SdFat.h>
 #include "sdios.h"
 #include <SPI.h>
@@ -285,7 +292,7 @@ int repeatDelay = 0;
 int frameBlankDelay = 0;
 boolean cycleAllImages = false;
 boolean cycleAllImagesOneshot = false;
-int cycleImageCount= 0;
+int cycleImageCount = 0;
 int loopCounter = 0;
 int abortEvent = 0;
 char color1;
@@ -346,12 +353,12 @@ String detectSdCardType() {
 #endif
             return "SD";
         case SD_CARD_TYPE_SDHC:
-            if(cardSize < 70000000) {
+            if ( cardSize < 70000000 ) {
 #ifdef SERIALDEBUG
                 Serial.println("╚=> SDHC");
 #endif
                 return "SDHC";
-            }else{
+            } else {
 #ifdef SERIALDEBUG
                 Serial.println("╚=> SDXC");
 #endif
@@ -493,9 +500,9 @@ void checkHardware() {
   Serial.println(ESP.getFlashChipMode());
   Serial.print("Flash Speed ");
   Serial.println(ESP.getFlashChipSpeed());
-#endif 
-  pinMode(BUILTIN_LED, OUTPUT);  
-  while(ESP.getFlashChipRealSize() != ESP.getFlashChipSize()){
+#endif
+  pinMode(BUILTIN_LED, OUTPUT);
+  while (ESP.getFlashChipRealSize() != ESP.getFlashChipSize()) {
     digitalWrite(BUILTIN_LED, HIGH);
     delay(400);
     digitalWrite(BUILTIN_LED, LOW);
@@ -503,7 +510,7 @@ void checkHardware() {
 #ifdef SERIALDEBUG
     Serial.println("Hardware configuration Misconfig");
 #endif
-  }    
+  }
 }
 
 
@@ -516,10 +523,10 @@ void setupDisplay() {
 #ifdef SERIALDEBUG
   Serial.println("╚> DONE");
 #endif
-  //display.drawBitmap(XPOS, YPOS, espLightStickLogo, BITMAP_WIDTH, BITMAP_HEIGHT,
-  //                   WHITE);
-  //display.display();
-  //delay(2000);
+//  display.drawBitmap(XPOS, YPOS, espLightStickLogo,
+//    BITMAP_WIDTH, BITMAP_HEIGHT,WHITE);
+//  display.display();
+//    delay(2000);
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(WHITE);
@@ -540,8 +547,7 @@ void getFilenamesFromImageFolder() {
     Serial.println(IMAGE_FOLDER_SD);
 #endif
     char cname[256];
-    if(sdDirectory.isOpen())
-    {
+    if (sdDirectory.isOpen()) {
         sdDirectory.close();
     }
     sdDirectory.open(IMAGE_FOLDER_SD, O_RDONLY);
@@ -554,8 +560,11 @@ void getFilenamesFromImageFolder() {
         if (!sdFile.isHidden()) {
             sdFile.getName(cname, 255);
             entryFileName = String(cname);
-            if (!sdFile.isHidden() && !entryFileName.startsWith("_") && !entryFileName.startsWith(".")) {
-                if (entryFileName.endsWith(".bmp") || entryFileName.endsWith(".BMP") ) {
+            if (!sdFile.isHidden() &&
+            !entryFileName.startsWith("_") &&
+            !entryFileName.startsWith(".")) {
+                if (entryFileName.endsWith(".bmp") ||
+                entryFileName.endsWith(".BMP") ) {
                     fileNames[fileCount] = entryFileName;
 #ifdef SERIALDEBUG
                     Serial.print(" ");
@@ -577,7 +586,7 @@ void getFilenamesFromImageFolder() {
     amountOfUsableFiles = fileCount;
 }
 
-bool checkConfig(String checkValue){
+bool checkConfig(String checkValue) {
     checkValue.toLowerCase();
     char color1 = checkValue[0];
     char color2 = checkValue[1];
@@ -606,7 +615,7 @@ void checkSPIFFSConfig() {
     if (!SPIFFS.exists("/formatComplete.txt")) {
       Serial.println("Please wait 30 secs for SPIFFS to be formatted");
       SPIFFS.format();
-      Serial.println("Spiffs formatted");     
+      Serial.println("Spiffs formatted");
       fs::File f = SPIFFS.open("/formatComplete.txt", "w");
       if (!f) {
           Serial.println("file open failed");
@@ -616,7 +625,7 @@ void checkSPIFFSConfig() {
     } else {
       Serial.println("SPIFFS is formatted. Moving along...");
     }
-#endif    
+#endif
 #ifdef SERIALDEBUG
     Serial.println("╚> done");
     Serial.print("╚> Check if ");
@@ -632,55 +641,58 @@ void checkSPIFFSConfig() {
       String contentType = getContentType(path);
       size_t sent = server.streamFile(configFile, contentType);
       String jsonConfig = configFile.readString();
-      configFile.close();      
+      configFile.close();
       StaticJsonDocument<200> doc;
-      DeserializationError jsonerror = deserializeJson(doc, jsonConfig);      
+      DeserializationError jsonerror = deserializeJson(doc, jsonConfig);
       if (!jsonerror) {
         String jsonString = doc["wifi"]["ssid"].as<String>();
-        if(jsonString.length() > 0) {
+        if (jsonString.length() > 0) {
           custom_wifi_ssid = jsonString;
 #ifdef SERIALDEBUG
           Serial.println("╚══> Found SSID in SPIFFS config");
 #endif
         }
         jsonString = doc["wifi"]["password"].as<String>();
-        if(jsonString.length() > 0) {
+        if (jsonString.length() > 0) {
           custom_wifi_password = jsonString;
 #ifdef SERIALDEBUG
           Serial.println("╚══> Found Wifi PW in SPIFFS config");
 #endif
         }
         jsonString = doc["wifi"]["mode"].as<String>();
-        if(jsonString.length() > 0) {
+        if (jsonString.length() > 0) {
           custom_wifi_mode = jsonString;
 #ifdef SERIALDEBUG
           Serial.println("╚══> Found Wifi Mode in SPIFFS config");
 #endif
         }
         jsonString = doc["ledColorOrder"].as<String>();
-        if(checkConfig(jsonString)) {
+        if (checkConfig(jsonString)) {
           ledColorOrder = jsonString;
 #ifdef SERIALDEBUG
           Serial.println("╚══> Found ledColorOrder in SPIFFS config");
 #endif
         }
-      } // !jsonerror
 #ifdef SERIALDEBUG
-      else {  
+      } else {
         Serial.println("╚══> Not parsable");
       }
+#else
+    }  //  !jsonerror
 #endif
-    } // SPIFFS.exists(path)
 #ifdef SERIALDEBUG
-    else {  
+    } else {
       Serial.println("╚═> File not present");
     }
+#else
+    }  //  SPIFFS.exists(path)
 #endif
-  } //  !SPIFFS.begin() else
 #ifdef SERIALDEBUG
-  else{
+  } else {
       Serial.println("╚> not available");
-  }    
+  }
+#else
+  }  //  !SPIFFS.begin() els  e
 #endif
 }
 
@@ -705,19 +717,18 @@ void showFileLED(String fileName) {
     String filePath = "";
     filePath.concat(F(IMAGE_FOLDER_SD));
     filePath = filePath + "/" + fileName;
-    fileName.toCharArray(cFilePathName,512);
+    fileName.toCharArray(cFilePathName, 512);
     sdFileToSend = sd.open(cFilePathName, O_READ);
     if (sdFileToSend) {
         ledFileReader();
         sdFileToSend.close();
-        if ( abortEvent >=3 ){
-            delay (100);
+        if ( abortEvent >=3 ) {
+            delay(100);
         }
 #ifdef SERIALDEBUG
         Serial.println("╚> Done");
 #endif
-    }
-    else {
+    } else {
 #ifdef SERIALDEBUG
         Serial.println("╚> Failed to read file");
 #endif
@@ -737,7 +748,8 @@ void azSort(String *entry, int length) {
     for (int i = 1; i < length; ++i) {
         String entryString = entry[i];
         int sortid;
-        for(sortid = i - 1; (sortid >= 0) && (entryString < entry[sortid]); sortid--) {
+        for (sortid = i - 1; (sortid >= 0) &&
+            (entryString < entry[sortid]); sortid--) {
             entry[sortid + 1] = entry[sortid];
         }
         entry[sortid +1] = entryString;
@@ -748,16 +760,16 @@ String outCardInfo(int type) {
     char data[64];
     switch (type) {
         case 1:
-            sprintf(data, "Found: %s", cardType.c_str());
+            snprintf(data, "Found: %s", cardType.c_str());
             break;
         case 2:
-            sprintf(data, "FAT%f", fatType);
+            snprintf(data, "FAT%f", fatType);
             break;
-        case 3:            
-            sprintf(data, "Max: %f MB", cardSize * 0.000512);
+        case 3:
+            snprintf(data, "Max: %f MB", cardSize * 0.000512);
             break;
         case 4:
-            sprintf(data, "Free: %f MB", freeSpace);
+            snprintf(data, "Free: %f MB", freeSpace);
             break;
     }
     return data;
@@ -789,7 +801,7 @@ void ledFileReader() {
     uint32_t imgClrUsed = readFileLong();
     uint32_t imgClrImportant = readFileLong();
 
-    if(
+    if (
       imgSize != LFR_BMP_BI_SIZE || imgWidth <= 0 ||
       imgHeight <= 0 || imgPlanes != 1 ||
       imgBitCount != 24 || imgCompression != LFR_BMP_BI_RGB ||
@@ -808,27 +820,28 @@ void ledFileReader() {
     uint32_t lineLength = imgWidth * 3;
     if ((lineLength % 4) != 0)
         lineLength = (lineLength / 4 + 1) * 4;
-    for(int y = imgHeight; y > 0; y--) {
-        int bufpos=0;
-        if (( abortEvent <= 3 ) && ( y <= ( imgHeight -5 ))) {
+    for (int y = imgHeight; y > 0; y--) {
+        int bufpos = 0;
+        if ((abortEvent <= 3) && (y <= (imgHeight -5))) {
             int keypress = keypadRead();
-            if (( keypress == BTN_SELECT ) || ( digitalRead( AUXBTN ) == LOW )) {
+            if ((keypress == BTN_SELECT) || (digitalRead(AUXBTN) == LOW)) {
                 abortEvent += 1;
             }
-            if ( abortEvent >=3 ){
+            if (abortEvent >= 3) {
                 cycleAllImagesOneshot = 0;
                 resetLedStripe();
                 break;
             }
         }
-        for(int x=0; x < displayWidth; x++) {
-            uint32_t offset = ( LFR_BMP_BF_OFF_BITS + ((( y-1 )* lineLength ) + ( x*3 ))) ;
-            sdFile.seekSet(offset); // seek(offset);
+        for (int x=0; x < displayWidth; x++) {
+            uint32_t offset = (LFR_BMP_BF_OFF_BITS +
+                                (((y-1)*  lineLength) + (x*3)));
+            sdFile.seekSet(offset);  //  seek(offset);
             getRGBwithGamma();
-            ledStripe.setPixelColor(x,color1,color2,color3);
+            ledStripe.setPixelColor(x, color1, color2, color3);
         }
         latchanddelay(frameDelay);
-        if(frameBlankDelay > 0){
+        if (frameBlankDelay > 0) {
             resetLedStripe();
             delay(frameBlankDelay);
         }
@@ -882,14 +895,14 @@ void setupSDCardStorage() {
     if (!sd.begin(SD_CS_PIN, SD_SCK_MHZ(50))) {
         if (sd.card()->errorCode()) {
             runErrorRutine("Card initialize failed");
-            while(1){
+            while (1) {
                 delay(2000);
             }
         }
     }
     if (!sdDirectory.open("/")) {
         runErrorRutine("Open root failed");
-        while(1);
+        while (1) {}
     }
     sdDirectory.close();
 #ifdef SERIALDEBUG
@@ -925,7 +938,8 @@ void setupLedStripe() {
         }
         for (int activeLedId = 0; activeLedId < LED_AMOUNT; activeLedId++) {
             ledStripe.setPixelColor(activeLedId, red, green, blue);
-            uint8_t activeBrightness = LED_BRIGHTNESS - LED_AMOUNT + activeLedId;
+            uint8_t activeBrightness = LED_BRIGHTNESS - LED_AMOUNT
+                                        + activeLedId;
             if (activeBrightness < 10) {
                 activeBrightness = 10;
             }
@@ -953,16 +967,16 @@ void setupLedStripe() {
 
 void menuHanlder() {
     loopCounter +=1;
-    if(abortEvent >= 3){
-        delay (250);
+    if (abortEvent >= 3) {
+        delay(250);
         sdFile.close();
         abortEvent = 0;
     }
-    if (loopCounter > 2000){
+    if (loopCounter > 2000) {
         int keypress = -1;
         keypress = keypadRead();
         delay(50);
-        if (( digitalRead(AUXBTN) == LOW )){
+        if ((digitalRead(AUXBTN) == LOW)) {
             keypress = BTN_SELECT;
         }
         switch (keypress) {
@@ -1001,8 +1015,7 @@ void showMenuEntry(int entry) {
             display.println(brightness);
             if (brightness == 100) {
                 display.setCursor(3, 1);
-            }
-            else {
+            } else {
                 display.setCursor(2, 1);
             }
             display.print("%");
@@ -1047,9 +1060,9 @@ void showMenuEntry(int entry) {
             display.clearDisplay();
             display.setCursor(0, 0);
             display.println("8) Cycle All");
-            if(cycleAllImages){
+            if (cycleAllImages) {
                 display.println("Yes");
-            }else{
+            } else {
                 display.println("No");
             }
             display.display();
@@ -1077,27 +1090,27 @@ void actionSelect() {
 #ifdef SERIALDEBUG
     Serial.println("Select");
 #endif
-    if(activeMenuEntry == MI_GOWIFI) {
+    if (activeMenuEntry == MI_GOWIFI) {
       wifiMode = true;
       return;
     }
     loopCounter = 0;
     delay(initDelay+100);
     cycleImageCount = 0;
-    do{
+    do {
         cycleAllImagesOneshot = cycleAllImages;
-        if (cycleAllImages){
+        if (cycleAllImages) {
             activeFileName = fileNames[cycleImageCount];
-            if (cycleImageCount  < amountOfUsableFiles){
+            if (cycleImageCount  < amountOfUsableFiles) {
                 activeFileName = fileNames[cycleImageCount];
-            }else{
+            } else {
                 break;
             }
         }
         abortEvent = 0;
         if (repeatTimes > 1) {
             for (int x = repeatTimes; x > 0; x--) {
-                if (abortEvent >= 3){
+                if (abortEvent >= 3) {
                     abortEvent = 0;
                     cycleAllImagesOneshot = 0;
                     break;
@@ -1108,7 +1121,7 @@ void actionSelect() {
                 }
                 delay(repeatDelay);
             }
-        }else{
+        } else {
             abortEvent = 0;
             showFileLED(activeFileName);
         }
@@ -1119,7 +1132,8 @@ void actionSelect() {
             resetLedStripe();
         }
         delay(repeatDelay);
-    } while ((cycleAllImagesOneshot) && (cycleImageCount < amountOfUsableFiles));
+    } while ((cycleAllImagesOneshot) &&
+                (cycleImageCount < amountOfUsableFiles));
 }
 
 void changeValue(byte direction) {
@@ -1127,24 +1141,23 @@ void changeValue(byte direction) {
     Serial.print("Change Entry: ");
     Serial.print(activeMenuEntry);
     Serial.print(" ");
-    Serial.println( (direction == VAL_INCREASE) ? "add" : "reduce" );
+    Serial.println((direction == VAL_INCREASE) ?
+                    "add" : "reduce");
 #endif
     loopCounter = 0;
     updateScreen = true;
     switch (activeMenuEntry) {
         case MI_FILESELECT:
-            if(direction == VAL_INCREASE){
+            if (direction == VAL_INCREASE) {
                 if (fileIndex < amountOfUsableFiles -1) {
                     fileIndex++;
-                }
-                else {
+                } else {
                     fileIndex = 0;
                 }
-            }else{
+            } else {
                 if (fileIndex > 0) {
                     fileIndex--;
-                }
-                else {
+                } else {
                     fileIndex = amountOfUsableFiles -1;
                 }
             }
@@ -1162,7 +1175,7 @@ void changeValue(byte direction) {
         case MI_INIT_DELAY:
             if (direction == VAL_INCREASE) {
                 initDelay += 1000;
-            }else{
+            } else {
                 initDelay -= 1000;
                 if (initDelay < 0) {
                     initDelay = 0;
@@ -1172,7 +1185,7 @@ void changeValue(byte direction) {
         case MI_FRAME_DELAY:
             if (direction == VAL_INCREASE) {
                 frameDelay += 1;
-            }else{
+            } else {
                 if (frameDelay > 0) {
                     frameDelay -= 1;
                 }
@@ -1181,7 +1194,7 @@ void changeValue(byte direction) {
         case MI_REPEAT_TIMES:
             if (direction == VAL_INCREASE) {
                 repeatTimes += 1;
-            }else{
+            } else {
                 if (repeatTimes > 1) {
                     repeatTimes -= 1;
                 }
@@ -1190,17 +1203,17 @@ void changeValue(byte direction) {
         case MI_REPEAT_DELAY:
             if (direction == VAL_INCREASE) {
                 repeatDelay += 100;
-            }else{
+            } else {
                 repeatDelay -= 100;
                 if (repeatDelay < 0) {
                     repeatDelay = 0;
                 }
-            };
+            }
             break;
         case MI_FRAME_BLANK_DELAY:
             if (direction == VAL_INCREASE) {
                 frameBlankDelay += 1;
-            }else{
+            } else {
                 if (frameBlankDelay > 1) {
                     frameBlankDelay -= 1;
                 }
@@ -1215,39 +1228,37 @@ void changeValue(byte direction) {
 void move(byte direction) {
 #ifdef SERIALDEBUG
     Serial.print("Menu move ");
-    Serial.println( (direction == VAL_INCREASE) ? "UP" : "DOWN" );
+    Serial.println((direction == VAL_INCREASE) ? "UP" : "DOWN");
 #endif
     loopCounter = 0;
-    updateScreen = true;  
+    updateScreen = true;
     if (direction == VAL_INCREASE) {
         if (activeMenuEntry == 1) {
             activeMenuEntry = 8;
-        }
-        else {
+        } else {
             activeMenuEntry -= 1;
         }
-    }else{
+    } else {
         if (activeMenuEntry == 8) {
             activeMenuEntry = 1;
-        }
-        else {
+        } else {
             activeMenuEntry += 1;
         }
     }
 }
 
 int keypadRead() {
-    adKeyIn = analogRead( 0 );
-    digitalWrite( AD_KEYBOARD, HIGH );
+    adKeyIn = analogRead(0);
+    digitalWrite(AD_KEYBOARD, HIGH);
     adKey = getKey(adKeyIn);
 
     if (adKey != adKeyOld) {
-        delay( 100 );
+        delay(100);
         adKeyIn = analogRead(0);
-        adKey = getKey( adKeyIn );
-        if ( adKey != adKeyOld) {
+        adKey = getKey(adKeyIn);
+        if (adKey != adKeyOld) {
             adKeyOld = adKey;
-            if ( adKey >=0 ){
+            if (adKey >=0) {
                 return adKey;
             }
         }
@@ -1269,16 +1280,16 @@ int getKey(unsigned int input) {
 
 
 void appHandler() {
-    if (updateScreen){
+    if (updateScreen) {
         updateScreen = false;
         showMenuEntry(activeMenuEntry);
     }
 #ifdef DEMOMODE
     delay(2000);
     activeMenuEntry++;
-    if(activeMenuEntry<=8){
+    if (activeMenuEntry <= 8) {
       updateScreen = true;
-    }else{
+    } else {
       wifiMode = true;
     }
 #else
@@ -1291,9 +1302,9 @@ char* firmwareFile = "fwupdate.bin";
 String firmwareVer = "1.05";
 
 void updateFw() {
-    if (sd.exists(firmwareFile)) {              
+    if (sd.exists(firmwareFile)) {
         File updateFile;
-#ifdef SERIALDEBUG        
+#ifdef SERIALDEBUG
         Serial.println("Update file found");
 #endif
         updateFile = sd.open(firmwareFile, FILE_READ);
@@ -1301,16 +1312,17 @@ void updateFw() {
             size_t updateSize = updateFile.size();
             if (updateSize > 0) {
                 md5.begin();
-                md5.addStream(updateFile, updateSize);
+                md5.addStreaxm(updateFile, updateSize);
                 md5.calculate();
                 String md5Hash = md5.toString();
-#ifdef SERIALDEBUG                
+#ifdef SERIALDEBUG
                 Serial.println("Update file hash: " + md5Hash);
 #endif
                 updateFile.close();
                 updateFile = sd.open(firmwareFile, FILE_READ);
                 if (updateFile) {
-                    uint32_t maxSketchSpace = (ESP.getFreeSketchSpace() - 0x1000) & 0xFFFFF000;
+                    uint32_t maxSketchSpace = (ESP.getFreeSketchSpace()-
+                        0x1000) & 0xFFFFF000;
                     if (!Update.begin(maxSketchSpace, U_FLASH)) {
                         Update.printError(Serial);
                         updateFile.close();
@@ -1320,7 +1332,7 @@ void updateFw() {
                     char md5Buf[md5BufSize];
                     md5Hash.toCharArray(md5Buf, md5BufSize);
                     Update.setMD5(md5Buf);
-#ifdef SERIALDEBUG                   
+#ifdef SERIALDEBUG
                     Serial.println("Updating firmware...");
 #endif
                     long bsent = 0;
@@ -1341,21 +1353,20 @@ void updateFw() {
                     updateFile.close();
                     if (Update.end(true)) {
 #ifdef SERIALDEBUG
-                        Serial.println("Installed firmware hash: " + Update.md5String());
+                        Serial.print("Installed firmware hash: ");
+                        Serial.println(Update.md5String());
                         Serial.println("Update complete");
 #endif
                         sd.remove(firmwareFile);
                         ESP.restart();
-                    }
-                    else {
+                    } else {
 #ifdef SERIALDEBUG
                         Serial.println("Update failed");
                         Update.printError(Serial);
 #endif
                     }
                 }
-            }
-            else {
+            } else {
 #ifdef SERIALDEBUG
                 Serial.println("Error, file is invalid");
 #endif
@@ -1364,10 +1375,11 @@ void updateFw() {
                 return;
             }
         }
-    }
 #ifdef SERIALDEBUG
-    else { 
-      Serial.println("No update file found");  
+    } else {
+      Serial.println("No update file found");
+    }
+#else
     }
 #endif
 }
@@ -1388,18 +1400,18 @@ void restGETImages() {
   Serial.println("RESTFUL => GET => images");
   Serial.print("Found ");
   Serial.print(amountOfUsableFiles);
-  Serial.println(" useable Images");    
+  Serial.println(" useable Images");
 #endif
   StaticJsonDocument<200> doc;
   JsonArray data = doc.createNestedArray("data");
-  for( int i = 0; i <= (amountOfUsableFiles -1); i++ ) {
+  for ( int i = 0; i <= (amountOfUsableFiles -1); i++ ) {
     String entry = fileNames[i];
     data.add(entry);
 #ifdef SERIALDEBUG
     Serial.print(i);
     Serial.print(". ");
     Serial.println(entry);
-#endif  
+#endif
   }
   int contentLength = measureJsonPretty(doc);
   server.setContentLength(CONTENT_LENGTH_UNKNOWN);
@@ -1410,13 +1422,13 @@ void restGETImages() {
   Serial.print("with ContentLeng ");
   Serial.println(contentLength);
   Serial.println(content);
-#endif 
+#endif
   server.send(200, "application/json", content);
   WiFiClient client = server.client();
   server.sendContent(F(""));
   client.stop();
   getFilenamesFromImageFolder();
-  return ;
+  return;
 }
 
 void restDELETEImage() {
@@ -1426,7 +1438,7 @@ if (server.args() == 0) {
     }
 #ifdef SERIALDEBUG
     Serial.println("DELETEFILE: " + server.arg(0));
-#endif   
+#endif
     String filename = server.arg(0);
     int lastIndexOfSlash = filename.lastIndexOf("=");
     lastIndexOfSlash++;
@@ -1436,34 +1448,34 @@ if (server.args() == 0) {
        return;
     }
     String subFilename = filename.substring(lastIndexOfSlash);
-    filename = subFilename;   
+    filename = subFilename;
     filename.toLowerCase();
     if (!filename.endsWith(".bmp")) {
        server.send(403, "text/plain", "");
        return;
     }
     sdDirectory.open(IMAGE_FOLDER_SD, O_READ);
-    if(sdDirectory.exists(filename.c_str())) {
+    if (sdDirectory.exists(filename.c_str())) {
       filename = String(IMAGE_FOLDER_SD) + "/" + filename;
-#ifdef SERIALDEBUG      
+#ifdef SERIALDEBUG
       Serial.println("handleFileDelete: " + filename);
       sd.remove(filename.c_str());
-      if(!sdDirectory.exists(filename.c_str())) {
-        Serial.println("DELETED: " + filename); 
+      if (!sdDirectory.exists(filename.c_str())) {
+        Serial.println("DELETED: " + filename);
       }
-#ifdef SERIALDEBUG    
+#ifdef SERIALDEBUG
       sdDirectory.ls();
 #endif
       server.send(200, "text/plain", "DELETED");
 #endif
     } else {
-#ifdef SERIALDEBUG     
-      Serial.println("File " + filename + " does not exist"); 
+#ifdef SERIALDEBUG
+      Serial.println("File " + filename + " does not exist");
 #endif
       server.send(200, "text/plain", "FileNotFound");
     }
     getFilenamesFromImageFolder();
-    return ;
+    return;
 }
 
 /*
@@ -1478,80 +1490,79 @@ if (server.args() == 0) {
 */
 
 bool loadFromSdCard(String filePath) {
-    String loadStringFromSD = filePath;  
+    String loadStringFromSD = filePath;
 #ifdef SERIALDEBUG
-    Serial.print( "Client asked for: ");
-    Serial.println( loadStringFromSD );
- #endif     
- 
-    if(sdDirectory.isOpen())
-    {
+    Serial.print("Client asked for: ");
+    Serial.println(loadStringFromSD);
+#endif
+
+    if (sdDirectory.isOpen()) {
         sdDirectory.close();
     }
     int lastIndexOfSlash = loadStringFromSD.lastIndexOf("/");
     lastIndexOfSlash--;
-    String path = loadStringFromSD.substring(0, lastIndexOfSlash);    
+    String path = loadStringFromSD.substring(0, lastIndexOfSlash);
     String contentType = getContentType(loadStringFromSD);
 #ifdef HTTP_GZ_ACTIVE
     String pathWithGz = loadStringFromSD + ".gz";
-    if (sd.exists(pathWithGz.c_str()) ) {
-        loadStringFromSD = pathWithGz;    
+    if (sd.exists(pathWithGz.c_str())) {
+        loadStringFromSD = pathWithGz;
         server.sendHeader("Content-Encoding", "gzip");
         server.sendHeader("Vary", "Accept-Encoding");
     } else {
-        Serial.print( " Not found gz ");
-        Serial.print( loadStringFromSD.c_str() );
-    }  
-#endif   
+        Serial.print(" Not found gz ");
+        Serial.print(loadStringFromSD.c_str());
+    }
+#endif
     sdFileToSend = sd.open(loadStringFromSD.c_str(), O_READ);
 #ifdef SERIALDEBUG
-    Serial.println( "Sending File" + filePath );
+    Serial.println("Sending File" + filePath);
 #endif
     if (server.streamFile(sdFileToSend, contentType) != sdFileToSend.size()) {
 #ifdef SERIALDEBUG
         Serial.println("Sent less data than expected!");
 #endif
     }
-    sdFileToSend.close();     
+    sdFileToSend.close();
     return true;
 }
 bool loadFromSpiffs(String filePath) {
     fs::File fileToSendSpiffs = SPIFFS.open(filePath, "r");
-    if (fileToSendSpiffs)
-    {
+    if (fileToSendSpiffs) {
       String contentType = getContentType(filePath);
-      if (server.streamFile(fileToSendSpiffs, contentType) != fileToSendSpiffs.size()) {
+      if (server.streamFile(fileToSendSpiffs,
+            contentType) != fileToSendSpiffs.size()) {
         #ifdef SERIALDEBUG
           Serial.println("Sent less data than expected!");
         #endif
       }
       fileToSendSpiffs.close();
       return true;
-    }
-    else
+    } else {
         return false;
+    }
 }
 
 File filToUpload;
 
 void handleFileUpload() {
     HTTPUpload& hfUpload = server.upload();
-    String uploadpath = "/";  
+    String uploadpath = "/";
     if (hfUpload.status == UPLOAD_FILE_START) {
       String filename;
         filename = hfUpload.filename;
-        if(!filename.startsWith("/")) {
+        if (!filename.startsWith("/")) {
           filename = "/" + filename;
         }
         int lastIndexOfSlash = filename.lastIndexOf("/");
         lastIndexOfSlash++;
-        String subFilename = filename.substring(lastIndexOfSlash);        
-        filename = subFilename;   
+        String subFilename = filename.substring(lastIndexOfSlash);
+        filename = subFilename;
         filename.toLowerCase();
-#ifdef SERIALDEBUG        
+#ifdef SERIALDEBUG
         Serial.print("lowercase testfilename: ");
-        Serial.println(filename);   
-#endif    
+        Serial.println(filename);
+#endif
         if (
           filename.endsWith(".htm")  ||
           filename.endsWith(".html") ||
@@ -1561,31 +1572,32 @@ void handleFileUpload() {
           filename.endsWith(".woff2")
           ) {
             uploadpath = "/web/";
-        }       
+        }
         if (filename.endsWith(".bmp")) {
           uploadpath = String(IMAGE_FOLDER_SD) + "/";
-        }        
-#ifdef SERIALDEBUG        
+        }
+#ifdef SERIALDEBUG
         Serial.print("Uploadpath chosen: ");
-        Serial.println(uploadpath);   
+        Serial.println(uploadpath);
 #endif
         if ( uploadpath == "/" ) {
           server.send(403);
         }
-        String fullfileName = uploadpath + filename;     
-#ifdef SERIALDEBUG           
+        String fullfileName = uploadpath + filename;
+#ifdef SERIALDEBUG
         Serial.print("Check if file already exists: ");
-        Serial.println(fullfileName);  
+        Serial.println(fullfileName);
 #endif
-        while (sd.exists(fullfileName.c_str()))
-        {
-#ifdef SERIALDEBUG          
+        while (sd.exists(fullfileName.c_str())) {
+#ifdef SERIALDEBUG
           Serial.print("File exist and will be removed");
-#endif          
+#endif
           sd.remove(fullfileName.c_str());
           delay(200);
         }
-        (filToUpload = sd.open(fullfileName.c_str(), FILE_WRITE)) ? Serial.println("SD opening successfull") : Serial.println("SD opening failed");
+        (filToUpload = sd.open(fullfileName.c_str(), FILE_WRITE)) ?
+            Serial.println("SD opening successfull") :
+            Serial.println("SD opening failed");
         filToUpload.seek(0);
 #ifdef SERIALDEBUG
         Serial.print("Upload: START, filename: ");
@@ -1617,28 +1629,29 @@ void handleFileUpload() {
 File fsUploadFile2Sd;
 void handleFileUpload2Sd() {
   HTTPUpload& sdUpload = server.upload();
-  if(sdUpload.status == UPLOAD_FILE_START){
+  if (sdUpload.status == UPLOAD_FILE_START) {
     Serial.println("UPLOAD_FILE_START");
     String sdFilename = sdUpload.filename;
-    if(!sdFilename.startsWith("/"))
-      sdFilename  = "/"+sdFilename ;
+    if (!sdFilename.startsWith("/")) {
+      sdFilename = "/"+sdFilename;
+    }
     Serial.print("sdFilename Name: ");
-    Serial.println(sdFilename );
+    Serial.println(sdFilename);
     fsUploadFile2Sd = sd.open(sdFilename.c_str(), O_WRITE);
     sdFilename  = String();
-  } else if(sdUpload.status == UPLOAD_FILE_WRITE){
+  } else if (sdUpload.status == UPLOAD_FILE_WRITE) {
     Serial.println("UPLOAD_FILE_WRITE");
-    if(fsUploadFile2Sd) {
+    if (fsUploadFile2Sd) {
       fsUploadFile2Sd.write(sdUpload.buf, sdUpload.currentSize);
     }
-  } else if(sdUpload.status == UPLOAD_FILE_END){
+  } else if (sdUpload.status == UPLOAD_FILE_END) {
     Serial.println("UPLOAD_FILE_END");
-    if(fsUploadFile2Sd) {      
-      Serial.println("fsUploadFile"); 
-      fsUploadFile2Sd.close();      
-      Serial.print("handleFileUpload Size: "); 
+    if (fsUploadFile2Sd) {
+      Serial.println("fsUploadFile");
+      fsUploadFile2Sd.close();
+      Serial.print("handleFileUpload Size: ");
       Serial.println(sdUpload.totalSize);
-      server.sendHeader("Location","/web/index.html");
+      server.sendHeader("Location", "/web/index.html");
       server.send(303);
     } else {
       server.send(500, "text/plain", "500: couldn't create file");
@@ -1649,28 +1662,29 @@ void handleFileUpload2Sd() {
 fs::File fsUploadFile2Spiffs;
   void handleFileUpload2Spiffs() {
   HTTPUpload& spiffsUpload = server.upload();
-  if(spiffsUpload.status == UPLOAD_FILE_START){
+  if (spiffsUpload.status == UPLOAD_FILE_START) {
     Serial.println("UPLOAD_FILE_START");
     String spiffsFilename = spiffsUpload.filename;
-    if(!spiffsFilename .startsWith("/"))
-      spiffsFilename  = "/"+spiffsFilename ;
+    if (!spiffsFilename .startsWith("/")) {
+      spiffsFilename  = "/"+spiffsFilename;
+    }
     Serial.print("handleFileUpload Name: ");
-    Serial.println(spiffsFilename );
+    Serial.println(spiffsFilename);
     fsUploadFile2Spiffs = SPIFFS.open(spiffsFilename , "w");
     spiffsFilename  = String();
-  } else if(spiffsUpload.status == UPLOAD_FILE_WRITE){
+  } else if (spiffsUpload.status == UPLOAD_FILE_WRITE) {
     Serial.println("UPLOAD_FILE_WRITE");
-    if(fsUploadFile2Spiffs) {
+    if (fsUploadFile2Spiffs) {
       fsUploadFile2Spiffs.write(spiffsUpload.buf, spiffsUpload.currentSize);
     }
-  } else if(spiffsUpload.status == UPLOAD_FILE_END){
+  } else if (spiffsUpload.status == UPLOAD_FILE_END) {
     Serial.println("UPLOAD_FILE_END");
-    if(fsUploadFile2Spiffs) {      
-      Serial.println("fsUploadFile"); 
+    if (fsUploadFile2Spiffs) {
+      Serial.println("fsUploadFile");
       fsUploadFile2Spiffs.close();
-      Serial.print("handleFileUpload Size: "); 
+      Serial.print("handleFileUpload Size: ");
       Serial.println(spiffsUpload.totalSize);
-      server.sendHeader("Location","/web/index.spiffs");
+      server.sendHeader("Location", "/web/index.spiffs");
       server.send(303);
     } else {
       server.send(500, "text/plain", "500: couldn't create file");
@@ -1685,7 +1699,7 @@ void handleFileUpload2Page() {
     <html>
       <form method='post' enctype='multipart/form-data'><input type='file' name='name'><input class='button' type='submit' value='Upload'></form>
     </html>
-    )=====" ;
+    )=====";
     server.send(200, "text/html", INDEX_HTML);
     WiFiClient client = server.client();
     client.stop();
@@ -1718,7 +1732,9 @@ void returnAccepted() {
 void handleNeedsSetup() {
     server.send(200, "text/html", HTML_HEADER);
     WiFiClient client = server.client();
-    server.sendContent("<h1> Please setup your sd card before wifi usage</h1><p>Maybe you want to #define SPECIAL_SETUP_MODE for an unrestricted setup mode.</p>");
+    server.sendContent("<h1> Please setup your sd card before wifi usage</h1>");
+    server.sendContent("<p>Maybe you want to #define SPECIAL_SETUP_MODE for");
+    server.sendContent("an unrestricted setup mode.</p>");
     server.sendContent(HTML_END);
     server.sendContent(" ");
     client.stop();
@@ -1738,7 +1754,7 @@ void toConfig() {
     Serial.println("Redirecting HTTP 307 to SD Card");
 #endif
     server.sendHeader("Location", String("/web/index.html"), true);
-    server.send ( 307, "text/plain", "Config available on SD Card");
+    server.send(307, "text/plain", "Config available on SD Card");
   } else {
 #ifdef SERIALDEBUG
     Serial.println("Sending Roor Hanlde");
@@ -1768,7 +1784,7 @@ void setupServer() {
         Serial.print(host);
         Serial.println(".local");
 #endif
-    }else {
+    } else {
 #ifdef SERIALDEBUG
       Serial.println("╚> failed");
 #endif
@@ -1799,18 +1815,15 @@ void setupServer() {
         returnAccepted();
     }, handleFileUpload);
 #ifdef SPECIAL_SETUP_MODE
-    server.on("/upload", HTTP_GET, handleFileUpload2Page);    
+    server.on("/upload", HTTP_GET, handleFileUpload2Page);
     server.on("/upload", HTTP_POST, [](){ server.send(200); },
-      handleFileUpload
-    );
-    server.on("/uploadSd", HTTP_GET, handleFileUpload2Page);    
+      handleFileUpload);
+    server.on("/uploadSd", HTTP_GET, handleFileUpload2Page);
     server.on("/uploadSd", HTTP_POST, [](){ server.send(200); },
-      handleFileUpload2Sd
-    );    
-    server.on("/uploadSpiffs", HTTP_GET, handleFileUpload2Page);    
+      handleFileUpload2Sd);
+    server.on("/uploadSpiffs", HTTP_GET, handleFileUpload2Page);
     server.on("/uploadSpiffs", HTTP_POST, [](){ server.send(200); },
-      handleFileUpload2Spiffs
-    );
+      handleFileUpload2Spiffs);
 #endif
     server.serveStatic("/web/Material.woff2", SPIFFS, "/Material.woff2");
     server.serveStatic("/favicon.ico", SPIFFS, "/favicon.ico");
@@ -1825,7 +1838,7 @@ void setupServer() {
     Serial.println("██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝  ");
     Serial.println("██║  ██║███████╗██║  ██║██████╔╝   ██║   ");
     Serial.println("╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝   ");
-    Serial.println(" ");                                         
+    Serial.println(" ");
 #endif
 }
 
@@ -1847,7 +1860,7 @@ void setupWifi() {
   Serial.println("START WIFI");
 #endif
 
-  if( custom_wifi_mode == "STA" ) {
+  if (custom_wifi_mode == "STA") {
     #ifdef SERIALDEBUG
       Serial.println("╚> Trying to connect to Wifi Network");
       Serial.println("╚=> SSID" + custom_wifi_ssid);
@@ -1863,11 +1876,12 @@ void setupWifi() {
       #endif
       delay(5000);
       fallbackWifi = true;
-    } // while WiFi.waitForConnectResult
+    }  //  while WiFi.waitForConnectResult
     if ( fallbackWifi == false )
       serverIp = WiFi.localIP();
   }
-  if ( custom_wifi_mode != "STA" && custom_wifi_ssid != "" && custom_wifi_password != "") {
+  if (custom_wifi_mode != "STA" && custom_wifi_ssid != "" &&
+        custom_wifi_password != "") {
 #ifdef SERIALDEBUG
     Serial.println("╚> Trying to start WIFI with values from SPIFFS");
     Serial.println("╚=> SSID" + custom_wifi_ssid);
@@ -1881,13 +1895,13 @@ void setupWifi() {
         Serial.println("╚==> Connection Failed!");
 #endif
         fallbackWifi = true;
-    }else{
+    } else {
       WiFi.softAPConfig(local_ip, gateway, subnet);
       serverIp = WiFi.softAPIP();
-    }    
+    }
   }
-  if(fallbackWifi) {
- #ifdef SERIALDEBUG
+  if (fallbackWifi) {
+#ifdef SERIALDEBUG
     Serial.println("╚> Starting WIFI with default values:");
     Serial.print("╚=> SSID: ");
     Serial.println(wifi_ssid);
@@ -1895,17 +1909,17 @@ void setupWifi() {
     Serial.println(wifi_password);
     Serial.print("╚=> Wifi Mode");
     Serial.println(WIFI_AP);
-#endif   
-    WiFi.mode(WIFI_AP);  
-    if (!WiFi.softAP(wifi_ssid, wifi_password) ) {
+#endif
+    WiFi.mode(WIFI_AP);
+    if (!WiFi.softAP(wifi_ssid, wifi_password)) {
         Serial.println("╚==> Wifi Failed!");
         return;
-    }      
+    }
     WiFi.softAPConfig(local_ip, gateway, subnet);
     serverIp = WiFi.softAPIP();
-  } 
+  }
 #ifdef SERIALDEBUG
-  if( custom_wifi_mode == "STA" ) {
+  if (custom_wifi_mode == "STA") {
     long rssi = WiFi.RSSI();
     Serial.print("╚==> signal strength (RSSI):");
     Serial.println(rssi);
@@ -1920,7 +1934,7 @@ void wifiHandler() {
     MDNS.update();
     int keypress = -1;
     keypress = keypadRead();
-    if( keypress == BTN_SELECT ) {
+    if (keypress == BTN_SELECT) {
       Serial.println("==> Leaving WIFI mode now.");
       wifiMode = false;
     }
@@ -1952,7 +1966,7 @@ void getRGBwithGamma() {
 int readFileByte() {
     int retbyte =- 1;
     while ( retbyte < 0 )
-        retbyte= sdFileToSend.read();
+        retbyte = sdFileToSend.read();
     return retbyte;
 }
 
@@ -1960,17 +1974,17 @@ uint32_t readFileLong() {
     uint32_t retValue;
     byte incomingbyte;
 
-    incomingbyte=readFileByte();
-    retValue=(uint32_t)((byte)incomingbyte);
+    incomingbyte = readFileByte();
+    retValue = (uint32_t)((byte)incomingbyte);
 
-    incomingbyte=readFileByte();
-    retValue+=(uint32_t)((byte)incomingbyte)<<8;
+    incomingbyte = readFileByte();
+    retValue += (uint32_t)((byte)incomingbyte) << 8;
 
-    incomingbyte=readFileByte();
-    retValue+=(uint32_t)((byte)incomingbyte)<<16;
+    incomingbyte = readFileByte();
+    retValue += (uint32_t)((byte)incomingbyte) << 16;
 
-    incomingbyte=readFileByte();
-    retValue+=(uint32_t)((byte)incomingbyte)<<24;
+    incomingbyte = readFileByte();
+    retValue += (uint32_t)((byte)incomingbyte) << 24;
 
     return retValue;
 }
@@ -1979,11 +1993,11 @@ uint16_t readFileInt() {
     byte incomingbyte;
     uint16_t retValue;
 
-    incomingbyte=readFileByte();
+    incomingbyte = readFileByte();
     retValue+=(uint16_t)((byte)incomingbyte);
 
-    incomingbyte=readFileByte();
-    retValue+=(uint16_t)((byte)incomingbyte)<<8;
+    incomingbyte = readFileByte();
+    retValue += (uint16_t)((byte)incomingbyte) << 8;
 
     return retValue;
 }
@@ -2010,7 +2024,7 @@ uint16_t readFileInt() {
 void setup() {
 #ifdef SERIALDEBUG
   Serial.begin(9600);
-  while(!Serial) {
+  while (!Serial) {
     delay(10000);
   }
   Serial.println("");
@@ -2035,10 +2049,10 @@ void setup() {
   Serial.println("#define FORMATSPIFFS active");
 #endif
     checkSPIFFSConfig();
-    if(!checkConfig(ledColorOrder)) {
+    if (!checkConfig(ledColorOrder)) {
         runErrorRutine("Config LED Color order Mismatch");
         delay(1000);
-        while(1){
+        while (1) {
             delay(1000);
         }
     }
@@ -2058,7 +2072,7 @@ void setup() {
 }
 
 void loop() {
-    if( wifiMode ) {
+    if (wifiMode) {
         wifiHandler();
     } else {
         appHandler();
@@ -2081,11 +2095,14 @@ const char HTML_HEADER[] =
         "<!DOCTYPE HTML>"
                 "<html>"
                 "<head>"
-                "<meta name = \"viewport\" content = \"width = device-width, initial-scale "
+                "<meta name = \"viewport\" content ="
+                "\"width = device-width, initial-scale "
                 "= 1.0, maximum-scale = 1.0, user-scalable=0\">"
                 "<title>ESPLightStick - SETUP</title>"
                 "<style>"
-                "body { background-color: #8d9aa5; color: #333; font-family: Arial, Helvetica,""Sans-Serif; Color: #000000;font-size:12pt; }"
+                "body { background-color: #8d9aa5; color:"
+                "#333; font-family: Arial, Helvetica,""Sans-Serif;"
+                "Color: #000000;font-size:12pt; }"
                 "</style>"
                 "</head>"
                 "<body><div style='margin-left:30px;'>";
@@ -2130,6 +2147,7 @@ const uint8_t gammaTable[] PROGMEM = {
         50, 51, 52, 52, 53, 54, 55, 55, 56, 57, 58, 58, 59, 60, 61, 62,
         62, 63, 64, 65, 66, 67, 67, 68, 69, 70, 71, 72, 73, 74, 74, 75,
         76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91,
-        92, 93, 94, 95, 96, 97, 98, 99,100,101,102,104,105,106,107,108,
-        109,110,111,113,114,115,116,117,118,120,121,122,123,125,126,127,
+        92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106,
+        107, 108, 109, 110, 111, 113, 114, 115, 116, 117, 118, 120, 121,
+        122, 123, 125, 126, 127,
 };
