@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Wifimode return to normal mode by pressing select
 - Fritzing
 
+### Fixed
+- Hardware Pinmatch for Wemos D1 Mini
+
 ## [0.3.1] - 2020-02-16
 ### Changed
 - Moved all Webserver creating parts into /webserver
