@@ -156,6 +156,8 @@ Flash 4M (3M SPIFFS)
 
 #define SPECIAL_SETUP_MODE // Uncomment if you need the special unrestricted upload for setup
 
+#define CHECKHW // Check EEPROM settings of Ide
+
 /*
 
 ██╗     ██╗██████╗ ██████╗  █████╗ ██████╗ ██╗███████╗███████╗
@@ -476,6 +478,35 @@ void resetLedStripe() {
   ╚═════╝  ╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝╚══════╝╚══════╝╚══════╝
   
 */
+
+void checkHardware() {
+  FlashMode_t ideMode = ESP.getFlashChipMode();
+
+#ifdef SERIALDEBUG
+  Serial.println("Checking your settings");
+  Serial.println("Hardware ");
+  Serial.print("ChipID ");
+  Serial.println(ESP.getChipId());
+  Serial.print("FlashID ");
+  Serial.println(ESP.getFlashChipId());
+  Serial.print("Flash Mode ");
+  Serial.println(ESP.getFlashChipMode());
+  Serial.print("Flash Speed ");
+  Serial.println(ESP.getFlashChipSpeed());
+#endif 
+  pinMode(BUILTIN_LED, OUTPUT);  
+  while(ESP.getFlashChipRealSize() != ESP.getFlashChipSize()){
+    digitalWrite(BUILTIN_LED, HIGH);
+    delay(400);
+    digitalWrite(BUILTIN_LED, LOW);
+    delay(400);
+#ifdef SERIALDEBUG
+    Serial.println("Hardware configuration Misconfig");
+#endif
+  }    
+}
+
+
 void setupDisplay() {
 #ifdef SERIALDEBUG
   Serial.println(" ");
@@ -1986,6 +2017,13 @@ void setup() {
   kickstart();
   Serial.println(" ");
   Serial.println("#define SERIALDEBUG active");
+#endif
+#ifdef CHECKHW
+  Serial.println("#define CHECKHW active");
+  checkHardware();
+#endif
+#ifdef DEMOMODE
+  Serial.println("#define DEMOMODE active");
 #endif
 #ifdef STARTSSL
   Serial.println("#define STARTSSL active");
