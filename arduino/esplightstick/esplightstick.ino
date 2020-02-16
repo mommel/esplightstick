@@ -130,6 +130,7 @@ Flash 4M (3M SPIFFS)
 #define NEOPX_DATA      D0
 #define AD_KEYBOARD     D5
 #define AUXBTN          D8
+#define ANALOG_READ_PIN A0
 
 /* ████████    WIFI SSID Password    ████████ */
 #define APSSID          "LEDSTICK"
@@ -766,6 +767,7 @@ void azSort(String *entry, int length) {
 
 String outCardInfo(int type) {
     char data[64];
+    /*
     switch (type) {
         case 1:
             snprintf(data, "Found: %s", cardType.c_str());
@@ -780,6 +782,7 @@ String outCardInfo(int type) {
             snprintf(data, "Free: %f MB", freeSpace);
             break;
     }
+    */
     return data;
 }
 
@@ -989,36 +992,35 @@ void menuHanlder() {
         keypress = keypadRead();
         Serial.println(keypress);
         delay(50);
-        if ((digitalRead(AUXBTN) == LOW) && false) {
+        if ((digitalRead(AUXBTN) != LOW)) {
             keypress = BTN_SELECT;
             Serial.println("AUXBTN LOW");
-            delay(500);
         }
         switch (keypress) {
             case BTN_SELECT:
                 loopCounter = 0;
-                Serial.println("o");
-                actionSelect();
+                Serial.println("BTN_SELECT");
+         //       actionSelect();
                 break;
             case BTN_RIGHT:
                 loopCounter = 0;
-                Serial.println("q");
-                changeValue(VAL_INCREASE);
+                Serial.println("BTN_RIGHT");
+         //       changeValue(VAL_INCREASE);
                 break;
             case BTN_LEFT:
                 loopCounter = 0;
-                Serial.println("p");
-                changeValue(VAL_DECREASE);
+                Serial.println("BTN_LEFT");
+         //       changeValue(VAL_DECREASE);
                 break;
             case BTN_UP:
                 loopCounter = 0;
-                Serial.println("e");
-                move(VAL_INCREASE);
+                Serial.println("BTN_UP");
+         //       move(VAL_INCREASE);
                 break;
             case BTN_DOWN:
                 loopCounter = 0;
-                Serial.println("0");
-                move(VAL_DECREASE);
+                Serial.println("BTN_DOWN");
+          //      move(VAL_DECREASE);
                 break;
             case NO_BTN:
                 loopCounter = 200;
@@ -1405,7 +1407,7 @@ void updateFw() {
             size_t updateSize = updateFile.size();
             if (updateSize > 0) {
                 md5.begin();
-                md5.addStreaxm(updateFile, updateSize);
+                md5.addStream(updateFile, updateSize);
                 md5.calculate();
                 String md5Hash = md5.toString();
 #ifdef SERIALDEBUG
