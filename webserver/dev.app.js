@@ -15,5 +15,6 @@ app.use('/images/', express.static('dev/images',
   {extensions: [ 'bmp' ]}
   ));
 app.listen(port, function () {
-    console.log('Dev Server running on port: ' + port);
+    console.log('Dev Server running');
+    console.log('Available at http://localhost:' + port + '/');
 });

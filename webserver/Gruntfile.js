@@ -112,7 +112,7 @@ module.exports = function(grunt) {
             "expand": true 
           },
           { 
-            "cwd": "sd-card/images", 
+            "cwd": "../sd-card/images", 
             "src": [
               '*.bmp'
             ], 
