@@ -202,14 +202,15 @@ Flash 4M (3M SPIFFS)
 */
 
 // Buttons
-#define BTN_RIGHT               0
-#define BTN_UP                  1
-#define BTN_DOWN                2
-#define BTN_LEFT                3
+#define NO_BTN                  5
+#define BTN_LEFT                2
+#define BTN_UP                  0
+#define BTN_DOWN                1
+#define BTN_RIGHT               3
 #define BTN_SELECT              4
-#define BTN_AMOUNT              5
+#define BTN_AMOUNT              6
 
-int adcKeyVal[5] ={ 30, 170, 390, 600, 800 };
+int adcKeyVal[6] ={ 0, 6, 21, 42, 89, 255 };
 
 // VALUE
 #define VAL_INCREASE            1
@@ -337,6 +338,7 @@ ESP8266WebServer server(80);
 ESP8266WebServer server(443);
 #endif
 
+
 String detectSdCardType() {
 #ifdef SERIALDEBUG
   Serial.println("╚> Detecting Card Type");
@@ -371,6 +373,8 @@ String detectSdCardType() {
             return "Unknown";
     }
 }
+
+
 const unsigned char espLightStickLogo[] = {
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
         0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0x3F, 0x1F, 0x0F, 0x0F, 0x07, 0x07, 0x03,
@@ -449,6 +453,7 @@ String getContentType(String fileName) {
     return "text/plain";
 }
 
+
 void runErrorRutine(String msg) {
     display.clearDisplay();
     display.setTextSize(1);
@@ -460,13 +465,14 @@ void runErrorRutine(String msg) {
     delay(2000);
     display.clearDisplay();
     display.display();
-    #ifdef SERIALDEBUG
-      Serial.println("╚>ERROR");
-      Serial.print("╚═>");
-      Serial.println(msg);
-    #endif
+#ifdef SERIALDEBUG
+    Serial.println("╚>ERROR");
+    Serial.print("╚═>");
+    Serial.println(msg);
+#endif
     resetLedStripe();
 }
+
 
 void resetLedStripe() {
     for (int ledId = 0; ledId < LED_AMOUNT; ledId++) {
@@ -586,7 +592,12 @@ void getFilenamesFromImageFolder() {
     amountOfUsableFiles = fileCount;
 }
 
+<<<<<<< HEAD
 bool checkConfig(String checkValue) {
+=======
+
+bool checkConfig(String checkValue){
+>>>>>>> changes keypad functionality
     checkValue.toLowerCase();
     char color1 = checkValue[0];
     char color2 = checkValue[1];
@@ -603,6 +614,7 @@ bool checkConfig(String checkValue) {
         return true;
     }
 }
+
 
 void checkSPIFFSConfig() {
 #ifdef SERIALDEBUG
@@ -698,14 +710,12 @@ void checkSPIFFSConfig() {
 
 /*
 
-
   ██╗     ███████╗██████╗ ███████╗████████╗██╗ ██████╗██╗  ██╗
   ██║     ██╔════╝██╔══██╗██╔════╝╚══██╔══╝██║██╔════╝██║ ██╔╝
   ██║     █████╗  ██║  ██║███████╗   ██║   ██║██║     █████╔╝ 
   ██║     ██╔══╝  ██║  ██║╚════██║   ██║   ██║██║     ██╔═██╗ 
   ███████╗███████╗██████╔╝███████║   ██║   ██║╚██████╗██║  ██╗
   ╚══════╝╚══════╝╚═════╝ ╚══════╝   ╚═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝
-                                                              
 
 */
 
@@ -739,10 +749,12 @@ void showFileLED(String fileName) {
     }
 }
 
+
 void latchanddelay(int duration) {
     ledStripe.show();
     delay(duration);
 }
+
 
 void azSort(String *entry, int length) {
     for (int i = 1; i < length; ++i) {
@@ -755,6 +767,7 @@ void azSort(String *entry, int length) {
         entry[sortid +1] = entryString;
     }
 }
+
 
 String outCardInfo(int type) {
     char data[64];
@@ -774,6 +787,7 @@ String outCardInfo(int type) {
     }
     return data;
 }
+
 
 void ledFileReader() {
     uint16_t bmpType = readFileInt();
@@ -848,6 +862,7 @@ void ledFileReader() {
     }
 }
 
+
 void checkCard() {
     cardSize = sd.card()->cardSize();
     cardType = detectSdCardType();
@@ -887,6 +902,7 @@ void checkCard() {
     delay(1000);
 }
 
+
 void setupSDCardStorage() {
 #ifdef SERIALDEBUG
     Serial.println(" ");
@@ -913,6 +929,7 @@ void setupSDCardStorage() {
     azSort(fileNames, amountOfUsableFiles);
     showActiveFilename();
 }
+
 
 void setupLedStripe() {
     ledStripe.begin();
@@ -975,28 +992,50 @@ void menuHanlder() {
     if (loopCounter > 2000) {
         int keypress = -1;
         keypress = keypadRead();
+        Serial.println(keypress);
         delay(50);
+<<<<<<< HEAD
         if ((digitalRead(AUXBTN) == LOW)) {
+=======
+        if (( digitalRead(AUXBTN) == LOW && false )){
+>>>>>>> changes keypad functionality
             keypress = BTN_SELECT;
+            Serial.println("AUXBTN LOW");
+            delay(500);
         }
         switch (keypress) {
             case BTN_SELECT:
+                loopCounter=0;
+                Serial.println("o");
                 actionSelect();
                 break;
             case BTN_RIGHT:
+                loopCounter=0;
+                Serial.println("q");
                 changeValue(VAL_INCREASE);
                 break;
             case BTN_LEFT:
+                loopCounter=0;
+                Serial.println("p");
                 changeValue(VAL_DECREASE);
                 break;
             case BTN_UP:
+                loopCounter=0;
+                Serial.println("e");
                 move(VAL_INCREASE);
                 break;
             case BTN_DOWN:
+                loopCounter=0;
+                Serial.println("0");
                 move(VAL_DECREASE);
+                break;
+            case NO_BTN:
+                loopCounter=200;
                 break;
         }
     }
+    Serial.println(loopCounter);
+    return;
 }
 
 void showMenuEntry(int entry) {
@@ -1007,6 +1046,10 @@ void showMenuEntry(int entry) {
             display.println("1) Select File:");
             display.println(activeFileName);
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("1) Select File");
+            Serial.println(activeFileName);
+#endif
             break;
         case MI_BRIGHTNESS:
             display.clearDisplay();
@@ -1020,6 +1063,11 @@ void showMenuEntry(int entry) {
             }
             display.print("%");
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("2) Brightness");
+            Serial.print(brightness);
+            Serial.println("%");
+#endif
             break;
         case MI_INIT_DELAY:
             display.clearDisplay();
@@ -1027,6 +1075,10 @@ void showMenuEntry(int entry) {
             display.println("3) Init Delay");
             display.println(initDelay);
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("3) Init Delay");
+            Serial.print(initDelay);
+#endif
             break;
         case MI_FRAME_DELAY:
             display.clearDisplay();
@@ -1034,6 +1086,10 @@ void showMenuEntry(int entry) {
             display.println("4) Frame Delay");
             display.println(frameDelay);
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("4) Frame Delay");
+            Serial.print(frameDelay);
+#endif
             break;
         case MI_REPEAT_TIMES:
             display.clearDisplay();
@@ -1041,6 +1097,10 @@ void showMenuEntry(int entry) {
             display.println("5) Repeat Times");
             display.println(repeatTimes);
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("5) Repeat Times");
+            Serial.print(repeatTimes);
+#endif
             break;
         case MI_REPEAT_DELAY:
             display.clearDisplay();
@@ -1048,6 +1108,10 @@ void showMenuEntry(int entry) {
             display.println("6) Repeat Delay");
             display.println(repeatDelay);
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("6) Repeat Delay");
+            Serial.print(repeatDelay);
+#endif
             break;
         case MI_FRAME_BLANK_DELAY:
             display.clearDisplay();
@@ -1055,6 +1119,10 @@ void showMenuEntry(int entry) {
             display.println("7) Frame Off Time");
             display.println(frameBlankDelay);
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("7) Frame Off Time");
+            Serial.print(frameBlankDelay);
+#endif
             break;
         case MI_CYCLE_ALL_IMAGES:
             display.clearDisplay();
@@ -1066,15 +1134,27 @@ void showMenuEntry(int entry) {
                 display.println("No");
             }
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("8) Cycle All");
+            if(cycleAllImages){
+                Serial.println("Yes");
+            }else{
+                Serial.println("No");
+            }
+#endif
             break;
         case MI_GOWIFI:
             display.clearDisplay();
             display.setCursor(0, 0);
             display.println("9) Goto WifiMode");
             display.display();
+#ifdef SERIALDEBUG
+            Serial.println("9) Goto WifiMode");
+#endif
             break;
     }
 }
+
 
 void showActiveFilename() {
     activeFileName = fileNames[fileIndex];
@@ -1085,6 +1165,7 @@ void showActiveFilename() {
     display.println(activeFileName);
     display.display();
 }
+
 
 void actionSelect() {
 #ifdef SERIALDEBUG
@@ -1135,6 +1216,7 @@ void actionSelect() {
     } while ((cycleAllImagesOneshot) &&
                 (cycleImageCount < amountOfUsableFiles));
 }
+
 
 void changeValue(byte direction) {
 #ifdef SERIALDEBUG
@@ -1225,6 +1307,7 @@ void changeValue(byte direction) {
     }
 }
 
+
 void move(byte direction) {
 #ifdef SERIALDEBUG
     Serial.print("Menu move ");
@@ -1247,24 +1330,42 @@ void move(byte direction) {
     }
 }
 
+
 int keypadRead() {
+<<<<<<< HEAD
     adKeyIn = analogRead(0);
     digitalWrite(AD_KEYBOARD, HIGH);
+=======
+    adKeyIn = map(analogRead(ANALOG_READ_PIN), 0, 1024, 0, 255);
+    digitalWrite( AD_KEYBOARD, HIGH );
+    if(adKeyIn == NO_BTN) {
+      return NO_BTN;
+    }
+>>>>>>> changes keypad functionality
     adKey = getKey(adKeyIn);
-
     if (adKey != adKeyOld) {
+<<<<<<< HEAD
         delay(100);
         adKeyIn = analogRead(0);
         adKey = getKey(adKeyIn);
         if (adKey != adKeyOld) {
             adKeyOld = adKey;
             if (adKey >=0) {
+=======
+        delay( 100 );
+        adKeyIn = map(analogRead(ANALOG_READ_PIN), 0, 1024, 0, 255);
+        adKey = getKey( adKeyIn );
+        if ( adKey != adKeyOld) {
+            adKeyOld = adKey;
+            if ( adKey != NO_BTN ){
+>>>>>>> changes keypad functionality
                 return adKey;
             }
         }
     }
     return adKey;
 }
+
 
 int getKey(unsigned int input) {
     int k;
@@ -1278,28 +1379,54 @@ int getKey(unsigned int input) {
     return k;
 }
 
+void setupKeypad() {
+#ifdef SERIALDEBUG
+    Serial.println("Setting Pin to In/Output");
+#endif
+    pinMode(ANALOG_READ_PIN,INPUT);
+    pinMode(AD_KEYBOARD,OUTPUT);
+    pinMode(AUXBTN,INPUT);
+#ifdef SERIALDEBUG
+    Serial.println("╚> Done");
+#endif
+}
+
 
 void appHandler() {
+<<<<<<< HEAD
     if (updateScreen) {
         updateScreen = false;
+=======
+    if (updateScreen){
+>>>>>>> changes keypad functionality
         showMenuEntry(activeMenuEntry);
+        updateScreen = false;
     }
 #ifdef DEMOMODE
     delay(2000);
     activeMenuEntry++;
+<<<<<<< HEAD
     if (activeMenuEntry <= 8) {
       updateScreen = true;
     } else {
+=======
+    if(activeMenuEntry<=9){
+      updateScreen = true;
+      return;
+    }else{
+>>>>>>> changes keypad functionality
       wifiMode = true;
     }
-#else
-    menuHanlder();
 #endif
+    menuHanlder();
+    return;
 }
+
 
 MD5Builder md5;
 char* firmwareFile = "fwupdate.bin";
 String firmwareVer = "1.05";
+
 
 void updateFw() {
     if (sd.exists(firmwareFile)) {
@@ -1431,6 +1558,7 @@ void restGETImages() {
   return;
 }
 
+
 void restDELETEImage() {
 if (server.args() == 0) {
       server.send(500, "text/plain", "BAD ARGS");
@@ -1490,6 +1618,7 @@ if (server.args() == 0) {
 */
 
 bool loadFromSdCard(String filePath) {
+<<<<<<< HEAD
     String loadStringFromSD = filePath;
 #ifdef SERIALDEBUG
     Serial.print("Client asked for: ");
@@ -1497,6 +1626,16 @@ bool loadFromSdCard(String filePath) {
 #endif
 
     if (sdDirectory.isOpen()) {
+=======
+    String loadStringFromSD = filePath;  
+#ifdef SERIALDEBUG
+    Serial.print( "Client asked for: ");
+    Serial.println( loadStringFromSD );
+#endif     
+ 
+    if(sdDirectory.isOpen())
+    {
+>>>>>>> changes keypad functionality
         sdDirectory.close();
     }
     int lastIndexOfSlash = loadStringFromSD.lastIndexOf("/");
@@ -1530,11 +1669,18 @@ bool loadFromSpiffs(String filePath) {
     fs::File fileToSendSpiffs = SPIFFS.open(filePath, "r");
     if (fileToSendSpiffs) {
       String contentType = getContentType(filePath);
+<<<<<<< HEAD
       if (server.streamFile(fileToSendSpiffs,
             contentType) != fileToSendSpiffs.size()) {
         #ifdef SERIALDEBUG
           Serial.println("Sent less data than expected!");
         #endif
+=======
+      if (server.streamFile(fileToSendSpiffs, contentType) != fileToSendSpiffs.size()) {
+#ifdef SERIALDEBUG
+      Serial.println("Sent less data than expected!");
+#endif
+>>>>>>> changes keypad functionality
       }
       fileToSendSpiffs.close();
       return true;
@@ -1543,7 +1689,9 @@ bool loadFromSpiffs(String filePath) {
     }
 }
 
+
 File filToUpload;
+
 
 void handleFileUpload() {
     HTTPUpload& hfUpload = server.upload();
@@ -1608,8 +1756,8 @@ void handleFileUpload() {
             filToUpload.write(hfUpload.buf, hfUpload.currentSize);
         }
 #ifdef SERIALDEBUG
-          Serial.print("Upload: WRITE, Bytes: ");
-          Serial.println(hfUpload.currentSize);
+        Serial.print("Upload: WRITE, Bytes: ");
+        Serial.println(hfUpload.currentSize);
 #endif
     } else if (hfUpload.status == UPLOAD_FILE_END) {
         if (filToUpload) {
@@ -1624,6 +1772,7 @@ void handleFileUpload() {
         }
     }
 }
+
 
 #ifdef SPECIAL_SETUP_MODE
 File fsUploadFile2Sd;
@@ -1659,6 +1808,7 @@ void handleFileUpload2Sd() {
   }
 }
 
+
 fs::File fsUploadFile2Spiffs;
   void handleFileUpload2Spiffs() {
   HTTPUpload& spiffsUpload = server.upload();
@@ -1691,6 +1841,7 @@ fs::File fsUploadFile2Spiffs;
     }
   }
 }
+
 
 void handleFileUpload2Page() {
     String htmlContent;
@@ -1740,12 +1891,14 @@ void handleNeedsSetup() {
     client.stop();
 }
 
+
 void returnOK() {
 #ifdef SERIALDEBUG
     Serial.println("Sending HTTP 200 ");
 #endif
     server.send(200, "text/plain", "");
 }
+
 
 void toConfig() {
   String configSD = "/web/index.html";
@@ -1762,6 +1915,7 @@ void toConfig() {
     handleNeedsSetup();
   }
 }
+
 
 void setupServer() {
 #ifdef SERIALDEBUG
@@ -1825,7 +1979,6 @@ void setupServer() {
     server.on("/uploadSpiffs", HTTP_POST, [](){ server.send(200); },
       handleFileUpload2Spiffs);
 #endif
-    server.serveStatic("/web/Material.woff2", SPIFFS, "/Material.woff2");
     server.serveStatic("/favicon.ico", SPIFFS, "/favicon.ico");
     server.onNotFound(handleNotFound);
     server.begin();
@@ -1860,6 +2013,7 @@ void setupWifi() {
   Serial.println("START WIFI");
 #endif
 
+<<<<<<< HEAD
   if (custom_wifi_mode == "STA") {
     #ifdef SERIALDEBUG
       Serial.println("╚> Trying to connect to Wifi Network");
@@ -1867,16 +2021,32 @@ void setupWifi() {
       Serial.println("╚=> PW" + custom_wifi_password);
       Serial.println("╚=> MODE" + custom_wifi_mode);
     #endif
+=======
+  if( custom_wifi_mode == "STA" ) {
+#ifdef SERIALDEBUG
+    Serial.println("╚> Trying to connect to Wifi Network");
+    Serial.println("╚=> SSID" + custom_wifi_ssid);
+    Serial.println("╚=> PW" + custom_wifi_password);
+    Serial.println("╚=> MODE" + custom_wifi_mode);
+#endif
+>>>>>>> changes keypad functionality
     fallbackWifi = false;
     WiFi.mode(WIFI_STA);
     WiFi.begin(custom_wifi_ssid.c_str(), custom_wifi_password.c_str());
     while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-      #ifdef SERIALDEBUG
+#ifdef SERIALDEBUG
         Serial.println("╚==> Connection Failed!");
+<<<<<<< HEAD
       #endif
       delay(5000);
       fallbackWifi = true;
     }  //  while WiFi.waitForConnectResult
+=======
+#endif
+        delay(5000);
+        fallbackWifi = true;
+    } // while WiFi.waitForConnectResult
+>>>>>>> changes keypad functionality
     if ( fallbackWifi == false )
       serverIp = WiFi.localIP();
   }
@@ -1900,7 +2070,11 @@ void setupWifi() {
       serverIp = WiFi.softAPIP();
     }
   }
+<<<<<<< HEAD
   if (fallbackWifi) {
+=======
+  if(fallbackWifi) {
+>>>>>>> changes keypad functionality
 #ifdef SERIALDEBUG
     Serial.println("╚> Starting WIFI with default values:");
     Serial.print("╚=> SSID: ");
@@ -1928,6 +2102,7 @@ void setupWifi() {
   Serial.println(serverIp);
 #endif
 }
+
 
 void wifiHandler() {
     server.handleClient();
@@ -1957,11 +2132,13 @@ inline byte gamma() {
     return pgm_read_byte(&gammaTable[x]);
 }
 
+
 void getRGBwithGamma() {
     greenValue  = gamma() * (brightness * 0.01);
     blueValue   = gamma() * (brightness * 0.01);
     redValue    = gamma() * (brightness * 0.01);
 }
+
 
 int readFileByte() {
     int retbyte =- 1;
@@ -1969,6 +2146,7 @@ int readFileByte() {
         retbyte = sdFileToSend.read();
     return retbyte;
 }
+
 
 uint32_t readFileLong() {
     uint32_t retValue;
@@ -1988,6 +2166,7 @@ uint32_t readFileLong() {
 
     return retValue;
 }
+
 
 uint16_t readFileInt() {
     byte incomingbyte;
@@ -2057,6 +2236,7 @@ void setup() {
         }
     }
     setupDisplay();
+    setupKeypad();
     setupSDCardStorage();
     setupLedStripe();
     setupWifi();
@@ -2071,12 +2251,14 @@ void setup() {
     display.display();
 }
 
+
 void loop() {
     if (wifiMode) {
         wifiHandler();
     } else {
         appHandler();
     }
+    return;
 }
 
 /*
@@ -2107,9 +2289,11 @@ const char HTML_HEADER[] =
                 "</head>"
                 "<body><div style='margin-left:30px;'>";
 
+
 const char HTML_END[] =
         "</div></body>"
                 "</html>";
+
 
 void kickstart() {
   Serial.print("███████╗███████╗██████╗     ██╗     ██╗");
@@ -2131,6 +2315,7 @@ void kickstart() {
   Serial.print("╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝   ╚");
   Serial.println("═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝");
 }
+
 
 const uint8_t gammaTable[] PROGMEM = {
         0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
