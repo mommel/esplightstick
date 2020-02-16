@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2020-02-16
+### Added
+- Menuitem to goto Wifi Mode
+- Wifimode return to normal mode by pressing select
+- Fritzing
+- linting for Ardunino ino
+
+### Fixed
+- Hardware Pinmatch for Wemos D1 Mini
+
+### Changed
+- Pinmode for KeypadPins
 
 ## [0.3.1] - 2020-02-16
 ### Changed
